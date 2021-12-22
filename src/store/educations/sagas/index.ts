@@ -9,9 +9,9 @@ import {
 
 
 const getEducations = () =>
-    axios.get<IEducation[]>("http://localhost:3001/api/educations");
+    axios.get<IEducation[]>(`${process.env.REACT_APP_CV_API}/educations`);
 
-function* fetchPostsSaga() {
+function* fetchEducationSaga() {
     try {
         const response: AxiosResponse<IEducation[]> = yield call(getEducations);
         yield put(
@@ -29,7 +29,7 @@ function* fetchPostsSaga() {
 }
 
 function* educatiunWatchersSaga() {
-    yield all([takeLatest(educationActions.FETCH_EDUCATIONS_REQUEST, fetchPostsSaga)]);
+    yield all([takeLatest(educationActions.FETCH_EDUCATIONS_REQUEST, fetchEducationSaga)]);
 }
 
 export default educatiunWatchersSaga;

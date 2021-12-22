@@ -9,7 +9,7 @@ import {
 
 
 const getExperiences = () =>
-    axios.get<IExperience[]>("http://localhost:3001/api/experiences");
+    axios.get<IExperience[]>(`${process.env.REACT_APP_CV_API}/experiences`);
 
 function* fetchExperiencesSaga() {
     try {
