@@ -1,35 +1,24 @@
 import axios, { AxiosResponse } from "axios";
-import { all, call, put, takeLatest } from "redux-saga/effects";
-import { IExperience } from '../reducer/types'
-import { experienceActions } from '../actions/types'
-import {
-    fetchExperiencesFailure,
-    fetchExperiencesSuccess
-} from "../actions";
+import { SagaIterator } from "redux-saga";
+import { call, takeLatest } from "redux-saga/effects";
+import { bindAsyncAction } from 'typescript-fsa-redux-saga';
+import { fetchExperiences } from "../actions";
+
+import { IExperience } from "../reducer";
 
 
 const getExperiences = () =>
     axios.get<IExperience[]>(`${process.env.REACT_APP_CV_API}/experiences`);
 
-function* fetchExperiencesSaga() {
-    try {
+
+const fetchExperiencesWorker = bindAsyncAction(fetchExperiences, { skipStartedAction: true })(
+    function* (): SagaIterator {
         const response: AxiosResponse<IExperience[]> = yield call(getExperiences);
-        yield put(
-            fetchExperiencesSuccess({
-                experiences: response.data
-            })
-        );
-    } catch (e) {
-        yield put(
-            fetchExperiencesFailure({
-                error: (e as Error).message
-            })
-        );
+        return response.data
     }
-}
+);
 
-function* experiencesWatchersSaga() {
-    yield all([takeLatest(experienceActions.FETCH_EXPERIENCES_REQUEST, fetchExperiencesSaga)]);
-}
 
-export default experiencesWatchersSaga;
+export function* watchExperiencesRequest() {
+    yield takeLatest(fetchExperiences.started, fetchExperiencesWorker);
+}

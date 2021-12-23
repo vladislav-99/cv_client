@@ -8,8 +8,8 @@ import experiencesReducer from './experiences/reducer';
 const createRootReducer = (history: History<any>) =>
   combineReducers({
     router: connectRouter(history),
+    experiencesState: experiencesReducer,
     educationsState: educationsReducer,
-    experiencesState: experiencesReducer
   })
 
 

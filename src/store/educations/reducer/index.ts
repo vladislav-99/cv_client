@@ -1,41 +1,25 @@
-import { EducationActions, educationActions } from '../actions/types';
-import { IEducationState } from './types';
+import { reducerWithInitialState } from "typescript-fsa-reducers";
+import { fetchEducations } from "../actions";
 
-const initialState: IEducationState = {
-    pending: false,
-    error: null,
+export interface IEducation {
+    id: number,
+    name: string
+}
+
+export interface IEducationState {
+    educations: IEducation[]
+}
+
+export const initialState: IEducationState = {
     educations: []
-}
-//TODO change any
-const educationsReducer = (state = initialState, action: EducationActions): IEducationState => {
-    switch (action.type) {
-        case educationActions.FETCH_EDUCATIONS_REQUEST: {
-            return {
-                ...state,
-                pending: true
-            }
-        }
-        case educationActions.FETCH_EDUCATIONS_SUCCESS: {
-            return {
-                ...state,
-                educations: action.payload.educations,
-                pending: false,
-                error: null
-            }
-        }
-        case educationActions.FETCH_EDUCATIONS_FAILURE: {
-            return {
-                ...state,
-                educations: [],
-                pending: false,
-                error: action.payload.error
-            }
-        }
-        default:
-            return {
-                ...state
-            }
-    }
-}
+};
 
-export default educationsReducer
+const educationReducer = reducerWithInitialState(initialState)
+    .case(fetchEducations.done, (state, payload): IEducationState => {
+        return {
+            ...state,
+            educations: payload.result
+        }
+    })
+
+export default educationReducer

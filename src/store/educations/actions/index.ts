@@ -1,28 +1,10 @@
-import {
-    educationActions,
-    FetchEducationsFailure,
-    FetchEducationsFailurePayload,
-    fetchEducationsRequestt,
-    FetchEducationsSuccess,
-    FetchEducationsSuccessPayload
-} from './types';
+import { IEducation } from '../reducer';
+import actionCreatorFactory from "typescript-fsa";
 
+const actionCreator = actionCreatorFactory();
 
+export enum educationActions {
+    FETCH_EDUCATIONS = "FETCH_EDUCATIONS",
+}
 
-export const fetchEducationsRequest = (): fetchEducationsRequestt => ({
-    type: educationActions.FETCH_EDUCATIONS_REQUEST
-})
-
-export const fetchEducationsSuccess = (
-    payload: FetchEducationsSuccessPayload
-): FetchEducationsSuccess => ({
-    type: educationActions.FETCH_EDUCATIONS_SUCCESS,
-    payload
-})
-
-export const fetchEducationsFailure = (
-    payload: FetchEducationsFailurePayload
-): FetchEducationsFailure => ({
-    type: educationActions.FETCH_EDUCATIONS_FAILURE,
-    payload
-})
+export const fetchEducations = actionCreator.async<void, IEducation[]>(educationActions.FETCH_EDUCATIONS)

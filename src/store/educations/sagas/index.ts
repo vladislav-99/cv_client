@@ -1,35 +1,24 @@
 import axios, { AxiosResponse } from "axios";
-import { all, call, put, takeLatest } from "redux-saga/effects";
-import { IEducation } from '../reducer/types'
-import { educationActions } from '../actions/types'
-import {
-    fetchEducationsFailure,
-    fetchEducationsSuccess
-} from "../actions";
+import { SagaIterator } from "redux-saga";
+import { call, takeLatest } from "redux-saga/effects";
+import { bindAsyncAction } from 'typescript-fsa-redux-saga';
+import { fetchEducations } from "../actions";
 
+
+import { IEducation } from "../reducer";
 
 const getEducations = () =>
     axios.get<IEducation[]>(`${process.env.REACT_APP_CV_API}/educations`);
 
-function* fetchEducationSaga() {
-    try {
+
+const fetchEducationsWorker = bindAsyncAction(fetchEducations, { skipStartedAction: true })(
+    function* (): SagaIterator {
         const response: AxiosResponse<IEducation[]> = yield call(getEducations);
-        yield put(
-            fetchEducationsSuccess({
-                educations: response.data
-            })
-        );
-    } catch (e) {
-        yield put(
-            fetchEducationsFailure({
-                error: (e as Error).message
-            })
-        );
+        return response.data
     }
-}
+);
 
-function* educatiunWatchersSaga() {
-    yield all([takeLatest(educationActions.FETCH_EDUCATIONS_REQUEST, fetchEducationSaga)]);
-}
 
-export default educatiunWatchersSaga;
+export function* watchEducationsRequest() {
+    yield takeLatest(fetchEducations.started, fetchEducationsWorker);
+}

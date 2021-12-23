@@ -1,5 +1,16 @@
-import { ExperienceActions, experienceActions } from '../actions/types';
-import { IExperienceState } from './types';
+import { reducerWithInitialState } from "typescript-fsa-reducers";
+import { fetchExperiences } from '../actions';
+export interface IExperience {
+    id: number,
+    name: string
+}
+
+export interface IExperienceState {
+    pending: boolean,
+    error: string | null,
+    experiences: IExperience[]
+}
+
 
 const initialState: IExperienceState = {
     pending: false,
@@ -7,35 +18,12 @@ const initialState: IExperienceState = {
     experiences: []
 }
 
-const experiencesReducer = (state = initialState, action: ExperienceActions): IExperienceState => {
-    switch (action.type) {
-        case experienceActions.FETCH_EXPERIENCES_REQUEST: {
-            return {
-                ...state,
-                pending: true
-            }
+const educationReducer = reducerWithInitialState(initialState)
+    .case(fetchExperiences.done, (state, payload): IExperienceState => {
+        return {
+            ...state,
+            experiences: payload.result
         }
-        case experienceActions.FETCH_EXPERIENCES_SUCCESS: {
-            return {
-                ...state,
-                experiences: action.payload.experiences,
-                pending: false,
-                error: null
-            }
-        }
-        case experienceActions.FETCH_EXPERIENCES_FAILURE: {
-            return {
-                ...state,
-                experiences: [],
-                pending: false,
-                error: action.payload.error
-            }
-        }
-        default:
-            return {
-                ...state
-            }
-    }
-}
+    })
 
-export default experiencesReducer
+export default educationReducer

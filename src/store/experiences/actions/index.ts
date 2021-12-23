@@ -1,28 +1,10 @@
-import {
-    experienceActions,
-    FetchExperiencesFailure,
-    FetchExperiencesFailurePayload,
-    fetchExperiencesRequestt,
-    FetchExperiencesSuccess,
-    FetchExperiencesSuccessPayload
-} from './types';
+import actionCreatorFactory from "typescript-fsa";
+import { IExperience } from '../reducer';
 
+const actionCreator = actionCreatorFactory();
 
+export enum educationActions {
+    FETCH_EXPERIENCES = "FETCH_EXPERIENCES",
+}
 
-export const fetchExperiencesRequest = (): fetchExperiencesRequestt => ({
-    type: experienceActions.FETCH_EXPERIENCES_REQUEST
-})
-
-export const fetchExperiencesSuccess = (
-    payload: FetchExperiencesSuccessPayload
-): FetchExperiencesSuccess => ({
-    type: experienceActions.FETCH_EXPERIENCES_SUCCESS,
-    payload
-})
-
-export const fetchExperiencesFailure = (
-    payload: FetchExperiencesFailurePayload
-): FetchExperiencesFailure => ({
-    type: experienceActions.FETCH_EXPERIENCES_FAILURE,
-    payload
-})
+export const fetchExperiences = actionCreator.async<void, IExperience[]>(educationActions.FETCH_EXPERIENCES)
