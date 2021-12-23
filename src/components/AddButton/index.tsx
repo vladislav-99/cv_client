@@ -5,21 +5,39 @@ import { styled } from '@mui/system';
 
 interface IButtonProps {
   title: string,
+  secondary?: boolean,
+  disabled?: boolean,
   cb: () => void
 }
 
-const ColorButton = styled(Button)({
+const PrimaryButton = styled(Button)({
   fontFamily: 'Nunito',
   height: '45px',
   textTransform: 'capitalize',
+  boxShadow: 'none',
   backgroundColor: '#5893F9',
   '&:hover': {
     backgroundColor: '#74A7FF',
   },
 });
 
-const AddButton: React.FC<IButtonProps> = ({ title, cb }) => {
-  return <ColorButton variant="contained" onClick={cb}>+ {title}</ColorButton>
+const SecondaryButton = styled(Button)({
+  fontFamily: 'Nunito',
+  fontWeight: '600',
+  height: '45px',
+  textTransform: 'capitalize',
+  border: '1px solid #5893F9',
+  color: '#5893F9',
+  boxShadow: 'none',
+  backgroundColor: '#FFFFFF',
+  '&:hover': {
+    backgroundColor: '#ECF2FC',
+  },
+});
+
+const AddButton: React.FC<IButtonProps> = ({ title, secondary, disabled, cb }) => {
+  if (secondary) return <SecondaryButton variant="contained" disabled={disabled} onClick={cb}>{title}</SecondaryButton>
+  return <PrimaryButton variant="contained" disabled={disabled} onClick={cb}>{title}</PrimaryButton>
 }
 
 export default AddButton
