@@ -8,7 +8,7 @@ import AddButton from "../../components/AddButton";
 import Table from "../../components/Table";
 import { getColumns, Tables } from "../../components/Table/Columns";
 import { RootState } from '../../store'
-import { fetchExperiencesRequest } from "../../store/experiences/actions";
+import { fetchExperiences } from "../../store/experiences/actions";
 
 
 const Experiences: React.FC = () => {
@@ -19,7 +19,7 @@ const Experiences: React.FC = () => {
     );
 
     useEffect(() => {
-        if (!experiences.length) dispatch(fetchExperiencesRequest());
+        if (!experiences.length) dispatch(fetchExperiences.started());
     }, []);
 
 

@@ -8,7 +8,7 @@ import AddButton from "../../components/AddButton";
 import Table from "../../components/Table";
 import { getColumns, Tables } from "../../components/Table/Columns";
 import { RootState } from '../../store'
-import { fetchEducationsRequest } from "../../store/educations/actions";
+import { fetchEducations } from "../../store/educations/actions";
 
 const Educations: React.FC = () => {
     const dispatch = useDispatch();
@@ -18,7 +18,8 @@ const Educations: React.FC = () => {
     );
 
     useEffect(() => {
-        if (!educations.length) dispatch(fetchEducationsRequest());
+        console.log('234')
+        if (!educations.length) dispatch(fetchEducations.started());
     }, []);
 
     return <Box>
