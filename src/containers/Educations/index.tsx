@@ -11,30 +11,29 @@ import { RootState } from '../../store'
 import { fetchEducations } from "../../store/educations/actions";
 
 const Educations: React.FC = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    const { educations } = useSelector(
-        (state: RootState) => state.educationsState
-    );
+  const { educations } = useSelector(
+    (state: RootState) => state.educationsState
+  );
 
-    useEffect(() => {
-        console.log('234')
-        if (!educations.length) dispatch(fetchEducations.started());
-    }, []);
+  useEffect(() => {
+    if (!educations.length) dispatch(fetchEducations.started());
+  }, []);
 
-    return <Box>
-        <Title color='#535E6C'>Education</Title>
-        <Box sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-        }}>
-            <Search placeholder="Search university" />
-            <AddButton title="Add University" cb={() => { }} />
-        </Box>
-        <Table columns={getColumns(Tables.educations)} rows={educations} />
+  return <Box>
+    <Title color='#535E6C'>Education</Title>
+    <Box sx={{
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    }}>
+      <Search placeholder="Search university" />
+      <AddButton title="Add University" cb={() => { }} />
     </Box>
+    <Table columns={getColumns(Tables.educations)} rows={educations} />
+  </Box>
 }
 
 export default Educations

@@ -11,7 +11,7 @@ const MainLayout: React.FC = (props) => {
     <Sidebar />
     <Box
       component="main"
-      sx={{ flexGrow: 1, bgcolor: '#FBFBFB', p: '35px', height: '100vh' }}
+      sx={{ flexGrow: 1, bgcolor: '#FBFBFB', p: '35px', height: '100%', minHeight: '100vh' }}
     >
       {props.children}
     </Box>

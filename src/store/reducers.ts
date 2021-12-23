@@ -3,6 +3,7 @@ import { History } from 'history'
 import { combineReducers } from 'redux'
 import educationsReducer from './educations/reducer';
 import experiencesReducer from './experiences/reducer';
+import technologiesState from './technologies/reducer';
 
 
 const createRootReducer = (history: History<any>) =>
@@ -10,6 +11,7 @@ const createRootReducer = (history: History<any>) =>
     router: connectRouter(history),
     experiencesState: experiencesReducer,
     educationsState: educationsReducer,
+    technologiesState: technologiesState,
   })
 
 

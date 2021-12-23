@@ -1,22 +1,22 @@
-import { educationsColumns, experienceColumns } from "./Columns";
+import { educationsColumns, experienceColumns } from "./columns";
 
 export enum Tables {
-    projects,
-    users,
-    educations,
-    experioences
+  projects,
+  users,
+  educations,
+  experioences
 }
 
 
 export const getColumns = (table: Tables) => {
-    switch (table) {
-        case Tables.educations:
-            return educationsColumns
+  switch (table) {
+    case Tables.educations:
+      return educationsColumns
 
-        case Tables.experioences:
-            return experienceColumns
+    case Tables.experioences:
+      return experienceColumns
 
-        default:
-            return []
-    }
+    default:
+      return []
+  }
 }
