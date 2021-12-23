@@ -8,17 +8,17 @@ import { fetchEducations } from "../actions";
 import { IEducation } from "../reducer";
 
 const getEducations = () =>
-    axios.get<IEducation[]>(`${process.env.REACT_APP_CV_API}/educations`);
+  axios.get<IEducation[]>(`${process.env.REACT_APP_CV_API}/educations`);
 
 
 const fetchEducationsWorker = bindAsyncAction(fetchEducations, { skipStartedAction: true })(
-    function* (): SagaIterator {
-        const response: AxiosResponse<IEducation[]> = yield call(getEducations);
-        return response.data
-    }
+  function* (): SagaIterator {
+    const response: AxiosResponse<IEducation[]> = yield call(getEducations);
+    return response.data
+  }
 );
 
 
 export function* watchEducationsRequest() {
-    yield takeLatest(fetchEducations.started, fetchEducationsWorker);
+  yield takeLatest(fetchEducations.started, fetchEducationsWorker);
 }

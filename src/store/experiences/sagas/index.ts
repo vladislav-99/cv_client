@@ -8,17 +8,17 @@ import { IExperience } from "../reducer";
 
 
 const getExperiences = () =>
-    axios.get<IExperience[]>(`${process.env.REACT_APP_CV_API}/experiences`);
+  axios.get<IExperience[]>(`${process.env.REACT_APP_CV_API}/experiences`);
 
 
 const fetchExperiencesWorker = bindAsyncAction(fetchExperiences, { skipStartedAction: true })(
-    function* (): SagaIterator {
-        const response: AxiosResponse<IExperience[]> = yield call(getExperiences);
-        return response.data
-    }
+  function* (): SagaIterator {
+    const response: AxiosResponse<IExperience[]> = yield call(getExperiences);
+    return response.data
+  }
 );
 
 
 export function* watchExperiencesRequest() {
-    yield takeLatest(fetchExperiences.started, fetchExperiencesWorker);
+  yield takeLatest(fetchExperiences.started, fetchExperiencesWorker);
 }

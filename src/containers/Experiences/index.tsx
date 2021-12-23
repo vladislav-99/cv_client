@@ -12,31 +12,31 @@ import { fetchExperiences } from "../../store/experiences/actions";
 
 
 const Experiences: React.FC = () => {
-    const dispatch = useDispatch();
+  const dispatch = useDispatch();
 
-    const { experiences } = useSelector(
-        (state: RootState) => state.experiencesState
-    );
+  const { experiences } = useSelector(
+    (state: RootState) => state.experiencesState
+  );
 
-    useEffect(() => {
-        if (!experiences.length) dispatch(fetchExperiences.started());
-    }, []);
+  useEffect(() => {
+    if (!experiences.length) dispatch(fetchExperiences.started());
+  }, []);
 
 
 
-    return <Box>
-        <Title color='#535E6C'>Work experience</Title>
-        <Box sx={{
-            display: 'flex',
-            flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center'
-        }}>
-            <Search placeholder="Search company" />
-            <AddButton title="Add Company" cb={() => { }} />
-        </Box>
-        <Table columns={getColumns(Tables.experioences)} rows={experiences} />
+  return <Box>
+    <Title color='#535E6C'>Work experience</Title>
+    <Box sx={{
+      display: 'flex',
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+      alignItems: 'center'
+    }}>
+      <Search placeholder="Search company" />
+      <AddButton title="Add Company" cb={() => { }} />
     </Box>
+    <Table columns={getColumns(Tables.experioences)} rows={experiences} />
+  </Box>
 }
 
 export default Experiences
