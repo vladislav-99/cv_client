@@ -35,7 +35,7 @@ const Technologies: React.FC = () => {
       alignItems: 'center'
     }}>
       <Search placeholder="Search technology" />
-      <AddButton title="Technology" cb={() => { }} />
+      <AddButton title="+ Technology" cb={() => { }} />
     </Box>
     <Box sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>

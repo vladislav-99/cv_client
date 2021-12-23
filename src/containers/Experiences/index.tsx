@@ -9,6 +9,9 @@ import Table from "../../components/Table";
 import { getColumns, Tables } from "../../components/Table/Columns";
 import { RootState } from '../../store'
 import { fetchExperiences } from "../../store/experiences/actions";
+import CustomModal from "../../components/CustomModal";
+import AddExperiences from "../../components/AddExperiences";
+import useModal from "../../utils/useModal";
 
 
 const Experiences: React.FC = () => {
@@ -22,7 +25,7 @@ const Experiences: React.FC = () => {
     if (!experiences.length) dispatch(fetchExperiences.started());
   }, []);
 
-
+  const { modalOpen, setModalOpen, toggle } = useModal()
 
   return <Box>
     <Title color='#535E6C'>Work experience</Title>
@@ -33,9 +36,16 @@ const Experiences: React.FC = () => {
       alignItems: 'center'
     }}>
       <Search placeholder="Search company" />
-      <AddButton title="Add Company" cb={() => { }} />
+      <AddButton title="+ Add Company" cb={toggle} />
     </Box>
     <Table columns={getColumns(Tables.experioences)} rows={experiences} />
+    <CustomModal
+      title="Add Companies"
+      isActive={modalOpen}
+      handleClose={() => setModalOpen(false)}
+    >
+      <AddExperiences />
+    </CustomModal>
   </Box>
 }
 
