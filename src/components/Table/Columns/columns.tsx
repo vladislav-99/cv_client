@@ -7,6 +7,7 @@ import {
   GridRowParams
 } from '@mui/x-data-grid';
 import DeleteIcon from '../../../icons/DeleteIcon';
+import DeleteExperience from './DeleteExprience';
 
 function renderId(params: GridRenderCellParams<number>) {
   return (
@@ -60,15 +61,7 @@ export const experienceColumns = [
     field: 'actions',
     type: 'actions',
     getActions: (params: GridRowParams) => [
-      <GridActionsCellItem
-        icon={<DeleteIcon />}
-        sx={{
-          borderRadius: 5,
-          backgroundColor: '#F1F3F5'
-        }}
-        onClick={() => {}}
-        label="Delete"
-      />
+      <DeleteExperience params={params} />
     ]
   }
 ];
