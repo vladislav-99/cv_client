@@ -1,11 +1,12 @@
 import React from 'react';
-import Box from '@mui/material/Box'
-import Chip from "@mui/material/Chip";
+import Box from '@mui/material/Box';
+import Chip from '@mui/material/Chip';
 import { ITechnology } from '../../store/technologies/reducer';
 
-
-const Chips: React.FC<{ technologies?: ITechnology[] }> = ({ technologies }) => {
-  if (!technologies) return null
+const Chips: React.FC<{ technologies?: ITechnology[] }> = ({
+  technologies
+}) => {
+  if (!technologies) return null;
   return (
     <Box>
       {technologies.map(({ id, name }) => {
@@ -20,12 +21,13 @@ const Chips: React.FC<{ technologies?: ITechnology[] }> = ({ technologies }) => 
               px: '5px',
               mr: '10px',
               mb: '10px'
-            }} label={name} />
-        )
+            }}
+            label={name}
+          />
+        );
       })}
     </Box>
-  )
+  );
+};
 
-}
-
-export default Chips
+export default Chips;

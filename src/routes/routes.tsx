@@ -1,19 +1,19 @@
-import React from 'react'
-import { Redirect, Route, Switch } from 'react-router-dom'
-import MainLayout from '../layouts/Main'
-import UserIcon from '../icons/UserIcon'
-import CVIcon from '../icons/CVIcon'
-import ProjectIcon from '../icons/ProjectIcon'
-import EducationIcon from '../icons/EducationIcon'
-import TechnologyIcon from '../icons/TechnologyIcon'
-import ExperienceIcon from '../icons/ExperienceIcon'
-import { IconProps } from '../icons/types'
-import Projects from '../containers/Projects'
-import Experiences from '../containers/Experiences'
-import Technologies from '../containers/Technologies'
-import Educations from '../containers/Educations'
-import Users from '../containers/Users'
-import CVs from '../containers/CVs'
+import React from 'react';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import MainLayout from '../layouts/Main';
+import UserIcon from '../icons/UserIcon';
+import CVIcon from '../icons/CVIcon';
+import ProjectIcon from '../icons/ProjectIcon';
+import EducationIcon from '../icons/EducationIcon';
+import TechnologyIcon from '../icons/TechnologyIcon';
+import ExperienceIcon from '../icons/ExperienceIcon';
+import { IconProps } from '../icons/types';
+import Projects from '../containers/Projects';
+import Experiences from '../containers/Experiences';
+import Technologies from '../containers/Technologies';
+import Educations from '../containers/Educations';
+import Users from '../containers/Users';
+import CVs from '../containers/CVs';
 
 export enum RoutesTypes {
   main,
@@ -33,7 +33,7 @@ export const routesList: IRoute[] = [
     Component: CVs,
     name: 'CVs',
     type: RoutesTypes.main,
-    path: '/cvs',
+    path: '/cvs'
   },
   {
     RouteIcon: UserIcon,
@@ -70,18 +70,19 @@ export const routesList: IRoute[] = [
     type: RoutesTypes.other,
     path: '/experiences'
   }
-]
-
+];
 
 export const routes = (
   <>
     <Switch>
-      {routesList.map(({ Component, path }) => <Route exact path={path} key={path} >
-        <MainLayout>
-          <Component />
-        </MainLayout>
-      </Route>)}
+      {routesList.map(({ Component, path }) => (
+        <Route exact path={path} key={path}>
+          <MainLayout>
+            <Component />
+          </MainLayout>
+        </Route>
+      ))}
       <Redirect to="/cvs" />
     </Switch>
   </>
-)
+);
