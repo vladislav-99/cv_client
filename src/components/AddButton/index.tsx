@@ -1,13 +1,13 @@
-import React from "react";
-import Button from "@mui/material/Button";
+import React from 'react';
+import Button from '@mui/material/Button';
 
 import { styled } from '@mui/system';
 
 interface IButtonProps {
-  title: string,
-  secondary?: boolean,
-  disabled?: boolean,
-  cb: () => void
+  title: string;
+  secondary?: boolean;
+  disabled?: boolean;
+  cb: () => void;
 }
 
 const PrimaryButton = styled(Button)({
@@ -17,8 +17,8 @@ const PrimaryButton = styled(Button)({
   boxShadow: 'none',
   backgroundColor: '#5893F9',
   '&:hover': {
-    backgroundColor: '#74A7FF',
-  },
+    backgroundColor: '#74A7FF'
+  }
 });
 
 const SecondaryButton = styled(Button)({
@@ -31,13 +31,27 @@ const SecondaryButton = styled(Button)({
   boxShadow: 'none',
   backgroundColor: '#FFFFFF',
   '&:hover': {
-    backgroundColor: '#ECF2FC',
-  },
+    backgroundColor: '#ECF2FC'
+  }
 });
 
-const AddButton: React.FC<IButtonProps> = ({ title, secondary, disabled, cb }) => {
-  if (secondary) return <SecondaryButton variant="contained" disabled={disabled} onClick={cb}>{title}</SecondaryButton>
-  return <PrimaryButton variant="contained" disabled={disabled} onClick={cb}>{title}</PrimaryButton>
-}
+const AddButton: React.FC<IButtonProps> = ({
+  title,
+  secondary,
+  disabled,
+  cb
+}) => {
+  if (secondary)
+    return (
+      <SecondaryButton variant="contained" disabled={disabled} onClick={cb}>
+        {title}
+      </SecondaryButton>
+    );
+  return (
+    <PrimaryButton variant="contained" disabled={disabled} onClick={cb}>
+      {title}
+    </PrimaryButton>
+  );
+};
 
-export default AddButton
+export default AddButton;

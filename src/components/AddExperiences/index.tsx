@@ -1,42 +1,94 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState } from 'react';
 
-import Box from '@mui/material/Box'
-import InputField from "../InputField";
-import AddButton from "../AddButton";
-
+import Box from '@mui/material/Box';
+import InputField from '../InputField';
+import AddButton from '../AddButton';
+import Stack from '@mui/material/Stack';
+import IconButton from '@mui/material/IconButton';
+import DeleteIcon from '../../icons/DeleteIcon';
 
 const AddExperiences: React.FC = () => {
-  const [universities, setCompanies] = useState(['']);
-
+  const [experiences, setExperience] = useState(['']);
 
   const handleChange = (index: number) => (value: string) => {
-    const copyCompanies = [...universities];
-    copyCompanies[index] = value;
-    setCompanies(copyCompanies)
-  }
+    setExperience((experiencesState) => {
+      const copyExperience = [...experiencesState];
+      copyExperience[index] = value;
+      return copyExperience
+    });
+  };
 
   const handleAddCompany = () => {
-    setCompanies([...universities, ''])
-  }
+    setExperience([...experiences, '']);
+  };
 
-  const isHasEmptyField = useMemo(() => !!~universities.findIndex(universityName => universityName.trim() === ''), [universities])
+  const isHasEmptyField = useMemo(
+    () =>
+      !!~experiences.findIndex(
+        (experienceName) => experienceName.trim() === ''
+      ),
+    [experiences]
+  );
 
-  return <>
-    {universities.map((university, index) =>
-      <InputField
-        key={index}
-        value={university}
-        label='Company'
-        placeholder='Company'
-        onChangeHandler={handleChange(index)}
-      />)}
-    <Box mb={1}>
-      <AddButton title="+ Add Company" secondary cb={handleAddCompany} />
-    </Box>
-    <Box>
-      <AddButton title="Save Companies" disabled={isHasEmptyField} cb={() => { }} />
-    </Box>
-  </>
-}
+  const handleCancelField = (index: number) => () => {
+    setExperience((experiencesState) => {
+      const copyExperiences = [...experiencesState];
+      copyExperiences.splice(index, 1);
+      return copyExperiences
+    });
+  };
 
-export default AddExperiences
+  return (
+    <>
+      {experiences.map((experience, index, self) => (
+        <Stack
+          key={index}
+          direction="row"
+          alignItems="flex-end"
+        >
+          <Box
+            sx={{
+              flex: 1
+            }}
+          >
+            <InputField
+              value={experience}
+              label="Company"
+              placeholder="Company name"
+              onChangeHandler={handleChange(index)}
+            />
+          </Box>
+          {self.length > 1 && (
+            <IconButton
+              sx={{
+                m: '15px',
+                height: '40px',
+                width: '40px',
+                borderRadius: '5px',
+                backgroundColor: '#F1F3F5'
+              }}
+              onClick={handleCancelField(index)}
+            >
+              <DeleteIcon />
+            </IconButton>
+          )}
+        </Stack>
+      ))}
+      <Box mb={1}>
+        <AddButton
+          secondary
+          title="+ Add Company"
+          cb={handleAddCompany} />
+      </Box>
+      <Box>
+        <AddButton
+          title="Save Experience"
+          disabled={isHasEmptyField}
+          cb={() => { }}
+        />
+      </Box>
+    </>
+  );
+};
+
+export default AddExperiences;

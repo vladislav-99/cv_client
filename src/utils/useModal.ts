@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
 const useModal = (initialMode: boolean = false) => {
-  const [modalOpen, setModalOpen] = useState(initialMode)
+  const [modalOpen, setModalOpen] = useState(initialMode);
 
-  const toggle = () => setModalOpen(!modalOpen)
+  const toggle = () => setModalOpen(!modalOpen);
 
-  return { modalOpen, setModalOpen, toggle }
-}
+  return { modalOpen, setModalOpen, toggle };
+};
 
 export default useModal;

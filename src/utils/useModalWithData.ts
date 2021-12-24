@@ -1,20 +1,20 @@
-import React, { useState } from "react";
-import useModal from "./useModal";
+import React, { useState } from 'react';
+import useModal from './useModal';
 
 export const useModalWithData = <T>(
   initialMode: boolean = false,
   initialSelected: T | null = null
 ) => {
-  const { modalOpen, setModalOpen } = useModal(initialMode)
+  const { modalOpen, setModalOpen } = useModal(initialMode);
 
-  const [selected, setSelected] = useState(initialSelected)
+  const [selected, setSelected] = useState(initialSelected);
 
   const setModalState = (state: boolean) => {
-    setModalOpen(state)
+    setModalOpen(state);
     if (state === false) {
-      setSelected(null)
+      setSelected(null);
     }
-  }
+  };
 
-  return { modalOpen, setModalOpen, selected, setSelected, setModalState }
-}
+  return { modalOpen, setModalOpen, selected, setSelected, setModalState };
+};

@@ -19,17 +19,21 @@ const style = {
   bgcolor: 'background.paper',
   boxShadow: 1,
   borderRadius: '10px',
-  p: '50px',
+  p: '50px'
 };
 
 interface ModalProps {
-  isActive: boolean,
-  title: string,
-  handleClose: () => void
+  isActive: boolean;
+  title: string;
+  handleClose: () => void;
 }
 
-const CustomModal: React.FC<ModalProps> = ({ isActive, children, title, handleClose }) => {
-
+const CustomModal: React.FC<ModalProps> = ({
+  isActive,
+  children,
+  title,
+  handleClose
+}) => {
   return (
     <Modal
       open={isActive}
@@ -37,7 +41,7 @@ const CustomModal: React.FC<ModalProps> = ({ isActive, children, title, handleCl
       closeAfterTransition
       BackdropComponent={Backdrop}
       BackdropProps={{
-        timeout: 500,
+        timeout: 500
       }}
     >
       <Fade in={isActive}>
@@ -48,11 +52,12 @@ const CustomModal: React.FC<ModalProps> = ({ isActive, children, title, handleCl
             alignItems="flex-start"
             mb={4}
           >
-            <Title color='#535E6C'>{title}</Title>
-            <IconButton sx={{
-              marginRight: '-25px',
-              marginTop: '-25px'
-            }}
+            <Title color="#535E6C">{title}</Title>
+            <IconButton
+              sx={{
+                marginRight: '-25px',
+                marginTop: '-25px'
+              }}
               onClick={handleClose}
             >
               <CloseIcon />
@@ -61,8 +66,8 @@ const CustomModal: React.FC<ModalProps> = ({ isActive, children, title, handleCl
           {children}
         </Box>
       </Fade>
-    </Modal >
+    </Modal>
   );
-}
+};
 
-export default CustomModal
+export default CustomModal;

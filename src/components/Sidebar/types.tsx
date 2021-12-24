@@ -1,19 +1,17 @@
-import { IconProps } from "../../icons/types";
+import { IconProps } from '../../icons/types';
 
 export interface ItemCustomProps {
-  active?: boolean,
+  active?: boolean;
 }
 
 export interface INavItem {
-  name: string,
-  RouteIcon: React.FC<IconProps>,
-  path: string
+  name: string;
+  RouteIcon: React.FC<IconProps>;
+  path: string;
 }
-
 
 export interface SidebarListProps {
-  list: INavItem[],
-  activePath: string,
-  onChangePath: (path: string) => void
+  list: INavItem[];
+  activePath: string;
+  onChangePath: (path: string) => void;
 }
-

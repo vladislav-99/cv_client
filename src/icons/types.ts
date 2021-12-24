@@ -1,4 +1,4 @@
 export interface IconProps {
-  active?: boolean,
-  hover?: boolean
+  active?: boolean;
+  hover?: boolean;
 }
