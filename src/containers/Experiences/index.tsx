@@ -24,10 +24,9 @@ const Experiences: React.FC = () => {
     if (!experiencesIds.length) dispatch(fetchExperiences.started());
   }, []);
 
-
   const experiencesRows = useMemo(() => {
-    return experiencesIds.map(id => experiences[id]);
-  }, [experiencesIds])
+    return experiencesIds.map((id) => experiences[id]);
+  }, [experiencesIds]);
 
   const { modalOpen, setModalOpen, toggle } = useModal();
 

@@ -65,8 +65,8 @@ const Table: React.FC<TableProps> = ({ columns, rows }) => {
         autoHeight
         columns={columns}
         rows={rows}
-        pageSize={5}
-        rowsPerPageOptions={[5]}
+        pageSize={50}
+        rowsPerPageOptions={[50]}
       />
     </Box>
   );

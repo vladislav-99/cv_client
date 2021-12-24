@@ -11,10 +11,10 @@ const AddEducations: React.FC = () => {
   const [universities, setUniversities] = useState(['']);
 
   const handleChange = (index: number) => (value: string) => {
-    setUniversities(universitiesState => {
+    setUniversities((universitiesState) => {
       const copyUniversities = [...universitiesState];
       copyUniversities[index] = value;
-      return copyUniversities
+      return copyUniversities;
     });
   };
 
@@ -31,21 +31,17 @@ const AddEducations: React.FC = () => {
   );
 
   const handleCancelField = (index: number) => () => {
-    setUniversities(universitiesState => {
+    setUniversities((universitiesState) => {
       const copyUniversities = [...universitiesState];
       copyUniversities.splice(index, 1);
-      return copyUniversities
+      return copyUniversities;
     });
   };
 
   return (
     <>
       {universities.map((university, index, self) => (
-        <Stack
-          key={index}
-          direction="row"
-          alignItems="flex-end"
-        >
+        <Stack key={index} direction="row" alignItems="flex-end">
           <Box
             sx={{
               flex: 1
@@ -85,7 +81,7 @@ const AddEducations: React.FC = () => {
         <AddButton
           title="Save Universities"
           disabled={isHasEmptyField}
-          cb={() => { }}
+          cb={() => {}}
         />
       </Box>
     </>

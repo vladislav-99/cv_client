@@ -6,15 +6,18 @@ import AddButton from '../AddButton';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '../../icons/DeleteIcon';
+import { createExperiences } from '../../store/experiences/actions';
+import { useDispatch } from 'react-redux';
 
 const AddExperiences: React.FC = () => {
   const [experiences, setExperience] = useState(['']);
+  const dispatch = useDispatch();
 
   const handleChange = (index: number) => (value: string) => {
     setExperience((experiencesState) => {
       const copyExperience = [...experiencesState];
       copyExperience[index] = value;
-      return copyExperience
+      return copyExperience;
     });
   };
 
@@ -30,22 +33,23 @@ const AddExperiences: React.FC = () => {
     [experiences]
   );
 
+  const handleSaveExperiences = () => {
+    dispatch(createExperiences.started(experiences));
+    setExperience(['']);
+  };
+
   const handleCancelField = (index: number) => () => {
     setExperience((experiencesState) => {
       const copyExperiences = [...experiencesState];
       copyExperiences.splice(index, 1);
-      return copyExperiences
+      return copyExperiences;
     });
   };
 
   return (
     <>
       {experiences.map((experience, index, self) => (
-        <Stack
-          key={index}
-          direction="row"
-          alignItems="flex-end"
-        >
+        <Stack key={index} direction="row" alignItems="flex-end">
           <Box
             sx={{
               flex: 1
@@ -75,16 +79,13 @@ const AddExperiences: React.FC = () => {
         </Stack>
       ))}
       <Box mb={1}>
-        <AddButton
-          secondary
-          title="+ Add Company"
-          cb={handleAddCompany} />
+        <AddButton secondary title="+ Add Company" cb={handleAddCompany} />
       </Box>
       <Box>
         <AddButton
           title="Save Experience"
           disabled={isHasEmptyField}
-          cb={() => { }}
+          cb={handleSaveExperiences}
         />
       </Box>
     </>
