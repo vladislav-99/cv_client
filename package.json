@@ -29,7 +29,8 @@
     "typescript-fsa": "^3.0.0",
     "typescript-fsa-reducers": "^1.2.2",
     "typescript-fsa-redux-saga": "^2.0.0",
-    "typescript-fsa-redux-saga-extended": "^1.0.6"
+    "typescript-fsa-redux-saga-extended": "^1.0.6",
+    "usehooks-ts": "^2.1.1"
   },
   "scripts": {
     "start": "react-scripts start",

@@ -12,9 +12,13 @@ import { fetchTechnologies } from '../../store/technologies/actions';
 import { TechnologyTypes } from '../../store/technologies/reducer';
 import TechnologyCard from '../../components/TechnologyCard';
 import { RootState } from '../../store';
+import CustomModal from '../../components/CustomModal';
+import useModal from '../../utils/useModal';
+import AddTechnologies from '../../components/Modals/AddTechnologies';
 
 const Technologies: React.FC = () => {
   const dispatch = useDispatch();
+  const { modalOpen, setModalOpen, toggle } = useModal();
 
   const { technologyCounts } = useSelector(
     (state: RootState) => state.technologiesState
@@ -40,7 +44,7 @@ const Technologies: React.FC = () => {
         }}
       >
         <Search placeholder="Search technology" />
-        <AddButton title="+ Technology" cb={() => {}} />
+        <AddButton title="+ Technology" cb={toggle} />
       </Box>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2}>
@@ -63,6 +67,13 @@ const Technologies: React.FC = () => {
           </Grid>
         </Grid>
       </Box>
+      <CustomModal
+        title="Add Tecnologies"
+        isActive={modalOpen}
+        handleClose={() => setModalOpen(false)}
+      >
+        <AddTechnologies />
+      </CustomModal>
     </Box>
   );
 };

@@ -5,22 +5,8 @@ import {
   fetchExperiences,
   deleteExperience
 } from '../actions';
+import { ExperienceNormalized, IExperienceState } from '../types';
 import { experienceListSchema } from './normalize';
-export interface IExperience {
-  id: number;
-  name: string;
-}
-
-type ExperienceNormalized = {
-  [key: string]: IExperience;
-};
-
-export interface IExperienceState {
-  pending: boolean;
-  error: string | null;
-  experiencesIds: number[];
-  experiences: ExperienceNormalized;
-}
 
 const initialState: IExperienceState = {
   pending: false,
@@ -45,10 +31,10 @@ const educationReducer = reducerWithInitialState(initialState)
     const normalizedData = normalize(payload.result, experienceListSchema);
     const experiences: ExperienceNormalized | undefined =
       normalizedData.entities.experiences;
-
+    const experiencesIds = [...state.experiencesIds, ...normalizedData.result].sort((id1, id2) => id1 > id2 ? 1 : -1)
     return {
       ...state,
-      experiencesIds: [...state.experiencesIds, ...normalizedData.result],
+      experiencesIds,
       experiences: experiences
         ? {
           ...state.experiences,
@@ -62,7 +48,7 @@ const educationReducer = reducerWithInitialState(initialState)
       let experiencesIds = [...state.experiencesIds];
       const deleteId = payload.result.deletedExperience!.id;
 
-      experiencesIds = experiencesIds.filter((id) => id !== deleteId);
+      experiencesIds = experiencesIds.filter((id) => id !== deleteId).sort((id1, id2) => id1 > id2 ? 1 : -1);
       const experiences = { ...state.experiences };
 
       delete experiences[deleteId]

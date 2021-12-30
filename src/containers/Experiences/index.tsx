@@ -10,7 +10,7 @@ import { getColumns, Tables } from '../../components/Table/Columns';
 import { RootState } from '../../store';
 import { fetchExperiences } from '../../store/experiences/actions';
 import CustomModal from '../../components/CustomModal';
-import AddExperiences from '../../components/AddExperiences';
+import AddExperiences from '../../components/Modals/AddExperiences';
 import useModal from '../../utils/useModal';
 
 const Experiences: React.FC = () => {
@@ -26,7 +26,7 @@ const Experiences: React.FC = () => {
 
   const experiencesRows = useMemo(() => {
     return experiencesIds.map((id) => experiences[id]);
-  }, [experiencesIds]);
+  }, [experiencesIds, experiences]);
 
   const { modalOpen, setModalOpen, toggle } = useModal();
 

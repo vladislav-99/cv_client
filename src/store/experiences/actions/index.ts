@@ -1,24 +1,23 @@
 import actionCreatorFactory from 'typescript-fsa';
-import { IExperience } from '../reducer';
-import { IDeleteExperienceResponse } from '../types';
+import { IDeleteExperienceResponse, IExperience } from '../types';
 
 const actionCreator = actionCreatorFactory();
 
-export enum educationActions {
+export enum experiencesActions {
   FETCH_EXPERIENCES = 'FETCH_EXPERIENCES',
   CREATE_EXPERIENCES = 'CREATE_EXPERIENCES',
   DELETE_EXPERIENCE = 'DELETE_EXPERIENCE'
 }
 
 export const fetchExperiences = actionCreator.async<void, IExperience[]>(
-  educationActions.FETCH_EXPERIENCES
+  experiencesActions.FETCH_EXPERIENCES
 );
 
 export const createExperiences = actionCreator.async<string[], IExperience[]>(
-  educationActions.CREATE_EXPERIENCES
+  experiencesActions.CREATE_EXPERIENCES
 );
 
 export const deleteExperience = actionCreator.async<
   number,
   IDeleteExperienceResponse
->(educationActions.DELETE_EXPERIENCE);
+>(experiencesActions.DELETE_EXPERIENCE);

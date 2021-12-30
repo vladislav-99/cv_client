@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
@@ -11,18 +11,20 @@ import { RootState } from '../../store';
 import { fetchEducations } from '../../store/educations/actions';
 import CustomModal from '../../components/CustomModal';
 import useModal from '../../utils/useModal';
-import AddEducations from '../../components/AddEducations';
+import AddEducations from '../../components/Modals/AddEducations';
 
 const Educations: React.FC = () => {
   const dispatch = useDispatch();
 
-  const { educations } = useSelector(
+  const { educations, educationIds } = useSelector(
     (state: RootState) => state.educationsState
   );
 
   useEffect(() => {
-    if (!educations.length) dispatch(fetchEducations.started());
+    if (!educationIds.length) dispatch(fetchEducations.started());
   }, []);
+  
+  const educationsRows = useMemo(() => educationIds.map(id => educations[id]), [educationIds, educations])
 
   const { modalOpen, setModalOpen, toggle } = useModal();
 
@@ -41,7 +43,7 @@ const Educations: React.FC = () => {
 
         <AddButton title="+ Add University" cb={toggle} />
       </Box>
-      <Table columns={getColumns(Tables.educations)} rows={educations} />
+      <Table columns={getColumns(Tables.educations)} rows={educationsRows} />
 
       <CustomModal
         title="Add University"
