@@ -1,21 +1,54 @@
-import axios, { AxiosResponse } from 'axios';
+import { AxiosResponse } from 'axios';
 import { SagaIterator } from 'redux-saga';
 import { call, takeLatest } from 'redux-saga/effects';
+import { Action } from 'typescript-fsa';
 import { bindAsyncAction } from 'typescript-fsa-redux-saga';
-import { fetchTechnologies } from '../actions';
+import technologyApiService from '../../../libs/api/technologyApiService';
+import { fetchTechnologies, createTechnologies, deleteTechnology } from '../actions';
 
-import { ITechnology } from '../reducer';
-
-const getTecnologies = () =>
-  axios.get<ITechnology[]>(`${process.env.REACT_APP_CV_API}/technologies`);
+import { CreatedTehnologyType, IDeleteTechnologyResponse, ITechnology, TechnologyTypes } from '../types';
 
 const fetchTecnologiesWorker = bindAsyncAction(fetchTechnologies, {
   skipStartedAction: true
 })(function* (): SagaIterator {
-  const response: AxiosResponse<ITechnology[]> = yield call(getTecnologies);
+  const response: AxiosResponse<ITechnology[]> = yield call(technologyApiService.getAll);
   return response.data;
 });
 
+
+const createTecnologiesWorker = bindAsyncAction(createTechnologies, {
+  skipStartedAction: true
+})(function* (technologies): SagaIterator {
+  const response: AxiosResponse<ITechnology[]> = yield call(
+    technologyApiService.createMany,
+    technologies
+  );
+  return response.data;
+});
+
+const deleteTechnologyWorker = bindAsyncAction(deleteTechnology, {
+  skipStartedAction: true
+})(function* (id): SagaIterator {
+  const response: AxiosResponse<IDeleteTechnologyResponse> = yield call(
+    technologyApiService.delete,
+    id
+  );
+  return response.data;
+});
+
+
+
 export function* watchTecnologiesRequest() {
   yield takeLatest(fetchTechnologies.started, fetchTecnologiesWorker);
+}
+
+export function* watchAddTecnologiesRequest() {
+  yield takeLatest(createTechnologies.started, (action: Action<CreatedTehnologyType[]>) => {
+    return createTecnologiesWorker(action.payload);
+  });
+}
+export function* watchDeleteTechnologyRequest() {
+  yield takeLatest(deleteTechnology.started, (action: Action<number>) => {
+    return deleteTechnologyWorker(action.payload);
+  });
 }

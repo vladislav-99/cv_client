@@ -1,14 +1,17 @@
 import React, { useMemo, useState } from 'react';
+import { useDispatch } from 'react-redux';
 
 import Box from '@mui/material/Box';
-import InputField from '../InputField';
-import AddButton from '../AddButton';
+import InputField from '../../FormFields/InputField';
+import AddButton from '../../AddButton';
 import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '../../icons/DeleteIcon';
+import DeleteIcon from '../../../icons/DeleteIcon';
 import { Stack } from '@mui/material';
+import { createEducations } from '../../../store/educations/actions';
 
 const AddEducations: React.FC = () => {
   const [universities, setUniversities] = useState(['']);
+  const dispatch = useDispatch();
 
   const handleChange = (index: number) => (value: string) => {
     setUniversities((universitiesState) => {
@@ -36,6 +39,11 @@ const AddEducations: React.FC = () => {
       copyUniversities.splice(index, 1);
       return copyUniversities;
     });
+  };
+
+  const handleSaveEducations = () => {
+    dispatch(createEducations.started(universities));
+    setUniversities(['']);
   };
 
   return (
@@ -81,7 +89,7 @@ const AddEducations: React.FC = () => {
         <AddButton
           title="Save Universities"
           disabled={isHasEmptyField}
-          cb={() => {}}
+          cb={handleSaveEducations}
         />
       </Box>
     </>

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
@@ -8,20 +8,43 @@ import Title from '../../components/Title';
 import Search from '../../components/Search';
 import AddButton from '../../components/AddButton';
 import Divider from '@mui/material/Divider';
-import { fetchTechnologies } from '../../store/technologies/actions';
-import { TechnologyTypes } from '../../store/technologies/reducer';
+import { deleteTechnology, deleteTechnologyCancel, fetchTechnologies } from '../../store/technologies/actions';
+import { TechnologyTypes } from '../../store/technologies/types';
 import TechnologyCard from '../../components/TechnologyCard';
 import { RootState } from '../../store';
+import CustomModal from '../../components/CustomModal';
+import useModal from '../../utils/useModal';
+import AddTechnologies from '../../components/Modals/AddTechnologies';
+import DeleteContent from '../../components/Modals/DeleteContent';
+import useModalTrigger from '../../utils/useDeleteTrigger';
 
 const Technologies: React.FC = () => {
   const dispatch = useDispatch();
-
-  const { technologyCounts } = useSelector(
+  const { technologiesIds, technologyDeleting } = useSelector(
     (state: RootState) => state.technologiesState
   );
+  const { modalOpen, toggle } = useModal();
+  const { modalOpen: deleteModalOpen, toggle: toggleDeleteModal } = useModal();
+
+
+  const handleDeleteAllowCb = useCallback(() => dispatch(deleteTechnology.started(technologyDeleting)), [dispatch, technologyDeleting])
+  const handleDeleteCancelCb = useCallback(() => dispatch(deleteTechnologyCancel()), [dispatch])
+
+  const {
+    handleDeleteAllow,
+    handleDeleteCancel
+  } = useModalTrigger({
+    trigger: technologyDeleting !== -1,
+    onAllow: handleDeleteAllowCb,
+    onCancel: handleDeleteCancelCb,
+    onToggleModal: toggleDeleteModal
+  })
+
+  // const [deleteAllow, setDeleteAllow] = useState(false)
+
 
   useEffect(() => {
-    if (!technologyCounts) dispatch(fetchTechnologies.started());
+    if (!technologiesIds.length) dispatch(fetchTechnologies.started());
   }, []);
 
   const [soft, ...technologyNames] = Object.keys(
@@ -40,7 +63,7 @@ const Technologies: React.FC = () => {
         }}
       >
         <Search placeholder="Search technology" />
-        <AddButton title="+ Technology" cb={() => {}} />
+        <AddButton title="+ Technology" cb={toggle} />
       </Box>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2}>
@@ -63,6 +86,27 @@ const Technologies: React.FC = () => {
           </Grid>
         </Grid>
       </Box>
+      <CustomModal
+        title="Add Tecnologies"
+        isActive={modalOpen}
+        handleClose={toggle}
+      >
+        <AddTechnologies />
+      </CustomModal>
+      <CustomModal
+        title="Delete Technology?"
+        isActive={deleteModalOpen}
+        handleClose={handleDeleteCancel}
+        style={{
+          maxWidth: '450px',
+          padding: '30px'
+        }}
+      >
+        <DeleteContent
+          label={'technology'}
+          onDelete={handleDeleteAllow}
+        />
+      </CustomModal>
     </Box>
   );
 };

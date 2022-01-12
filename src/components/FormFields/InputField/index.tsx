@@ -18,6 +18,9 @@ const CssTextField = styled(FormControl)({
       paddingTop: 11,
       paddingBottom: 11
     },
+    '& input::placeholder': {
+      color: '#D0D4DA'
+    },
     '& fieldset': {
       borderColor: '#E3E3EA'
     },
@@ -56,13 +59,15 @@ const InputField: React.FC<InputFieldProps> = ({
       <InputLabel
         htmlFor={id}
         sx={{
-          fontFamily: 'Nunito'
+          fontFamily: 'Nunito',
+          color: '#9EA9BA',
+          mb: 1.5 
         }}
       >
         {label}
       </InputLabel>
 
-      <CssTextField fullWidth sx={{ my: 1.5 }} variant="outlined">
+      <CssTextField fullWidth sx={{ mb: 1.5 }} variant="outlined">
         <OutlinedInput
           placeholder={placeholder}
           value={value}

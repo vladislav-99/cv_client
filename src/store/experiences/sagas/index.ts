@@ -5,14 +5,14 @@ import { Action } from 'typescript-fsa';
 import { bindAsyncAction } from 'typescript-fsa-redux-saga';
 import { fetchExperiences, createExperiences, deleteExperience } from '../actions';
 
-import { IExperience } from '../reducer';
+import { IExperience } from '../types';
 import { IDeleteExperienceResponse } from '../types';
 
 const getExperiences = () =>
   axios.get<IExperience[]>(`${process.env.REACT_APP_CV_API}/experiences`);
 
 const deleteExperienceAxios = (id: number) =>
-  axios.delete<IExperience[]>(
+  axios.delete<IDeleteExperienceResponse>(
     `${process.env.REACT_APP_CV_API}/experiences/${id}`
   );
 
