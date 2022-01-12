@@ -2,13 +2,13 @@ import React from "react"
 import { useDispatch } from "react-redux"
 import { GridActionsCellItem, GridRowParams } from "@mui/x-data-grid"
 import DeleteIcon from "../../../icons/DeleteIcon"
-import { deleteExperienceAllow } from "../../../store/experiences/actions"
+import { deleteEducationAllow } from "../../../store/educations/actions"
 
 
-const DeleteExperience: React.FC<{ params: GridRowParams }> = ({ params }) => {
+const DeleteEducation: React.FC<{ params: GridRowParams }> = ({ params }) => {
   const dispatch = useDispatch()
   const handleOnClick = () => {
-    dispatch(deleteExperienceAllow({ id: Number(params.id) }))
+    dispatch(deleteEducationAllow({id: Number(params.id)}))
   }
 
   return <GridActionsCellItem
@@ -22,4 +22,4 @@ const DeleteExperience: React.FC<{ params: GridRowParams }> = ({ params }) => {
   />
 }
 
-export default DeleteExperience
+export default DeleteEducation

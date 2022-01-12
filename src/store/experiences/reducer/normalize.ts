@@ -1,5 +1,5 @@
-import { normalize, schema } from 'normalizr';
-import { IExperience } from '.';
+import { schema } from 'normalizr';
+import { IExperience } from '../types';
 
 const experienceSchema = new schema.Entity<IExperience>('experiences');
 

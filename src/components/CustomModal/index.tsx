@@ -8,8 +8,9 @@ import CloseIcon from '@mui/icons-material/Close';
 
 import Title from '../Title';
 import IconButton from '@mui/material/IconButton';
+import { styled } from '@mui/system';
 
-const style = {
+const modalStyle = {
   position: 'absolute' as 'absolute',
   top: '50%',
   left: '50%',
@@ -26,13 +27,22 @@ interface ModalProps {
   isActive: boolean;
   title: string;
   handleClose: () => void;
+  style?: {}
 }
+
+
+const CustomBox = styled(Box)({
+  '&::-webkit-scrollbar': {
+    width: '10px'
+  }
+})
 
 const CustomModal: React.FC<ModalProps> = ({
   isActive,
   children,
   title,
-  handleClose
+  handleClose,
+  style = {}
 }) => {
   return (
     <Modal
@@ -45,12 +55,15 @@ const CustomModal: React.FC<ModalProps> = ({
       }}
     >
       <Fade in={isActive}>
-        <Box sx={style}>
+        <Box sx={{
+          ...modalStyle,
+          ...style
+        }}>
           <Stack
             direction="row"
             justifyContent="space-between"
             alignItems="flex-start"
-            mb={4}
+            mb={2}
           >
             <Title color="#535E6C">{title}</Title>
             <IconButton
@@ -63,7 +76,12 @@ const CustomModal: React.FC<ModalProps> = ({
               <CloseIcon />
             </IconButton>
           </Stack>
-          {children}
+          <CustomBox sx={{
+            maxHeight: '800px',
+            overflow: 'auto',
+          }}>
+            {children}
+          </CustomBox>
         </Box>
       </Fade>
     </Modal>

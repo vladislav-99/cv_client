@@ -2,7 +2,7 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 
 import Paper from '@mui/material/Paper';
-import { TechnologyTypes } from '../../store/technologies/reducer';
+import { TechnologyTypes } from '../../store/technologies/types';
 import { styled } from '@mui/system';
 import Chips from './Chips';
 import { RootState } from '../../store';
@@ -27,15 +27,15 @@ interface TechnologyCardProps {
 }
 
 const TechnologyCard: React.FC<TechnologyCardProps> = ({ type }) => {
-  const technologies = useSelector(
+  const technologiesIds = useSelector(
     (state: RootState) =>
-      state.technologiesState.technologies[type as TechnologyTypes]
+      state.technologiesState.technologiesByTypes[type as TechnologyTypes]
   );
 
   return (
     <Card>
       <CardTitle>{TechnologyTypes[type]}</CardTitle>
-      <Chips technologies={technologies} />
+      <Chips technologies={technologiesIds} />
     </Card>
   );
 };

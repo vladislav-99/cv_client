@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import { DataGrid, GridColumns } from '@mui/x-data-grid';
 import Box from '@mui/material/Box';
@@ -33,16 +33,24 @@ const StyledDataGrid = styled(DataGrid)({
   '& .MuiDataGrid-columnHeader:focus': {
     outline: 'none'
   },
-  //hide pagination
-  '& .MuiDataGrid-row:last-child .MuiDataGrid-cell': {
-    border: 'none'
-  },
-  '& .MuiDataGrid-row:last-child:hover': {
-    backgroundColor: 'transparent'
-  },
   '& .MuiDataGrid-footerContainer': {
-    display: 'none'
+    // display: 'none'
+    '& .MuiTablePagination-selectLabel, & .MuiTablePagination-displayedRows': {
+      fontFamily: 'Nunito'
+    }
   }
+
+  //hide pagination
+  // '& .MuiDataGrid-row:last-child .MuiDataGrid-cell': {
+  //   border: 'none'
+  // },
+  // '& .MuiDataGrid-row:last-child:hover': {
+  //   backgroundColor: 'transparent'
+  // },
+  // '& .MuiDataGrid-footerContainer': {
+  //   display: 'none'
+  // }
+
 });
 
 interface TableProps {
@@ -53,6 +61,10 @@ interface TableProps {
 }
 
 const Table: React.FC<TableProps> = ({ columns, rows }) => {
+  const [pageSize, setPeageSize] = useState(10);
+  const handleChangePageSize = (num: number) => {
+    setPeageSize(num)
+  }
   return (
     <Box sx={{ width: '100%' }}>
       <StyledDataGrid
@@ -65,8 +77,9 @@ const Table: React.FC<TableProps> = ({ columns, rows }) => {
         autoHeight
         columns={columns}
         rows={rows}
-        pageSize={50}
-        rowsPerPageOptions={[50]}
+        pageSize={pageSize}
+        rowsPerPageOptions={[10, 25, 50]}
+        onPageSizeChange={handleChangePageSize}
       />
     </Box>
   );

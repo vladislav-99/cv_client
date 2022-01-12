@@ -1,54 +1,45 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
-import { fetchTechnologies } from '../actions';
-
-export enum TechnologyTypes {
-  SOFT = 'Soft skills',
-  FRONT_END = 'Front-end',
-  BACK_END = 'Back-end',
-  DB = 'Databases',
-  HOSTING = 'Hosting',
-  OTHER = 'Other'
-}
-
-export interface ITechnology {
-  id: number;
-  name: string;
-  type: TechnologyTypes;
-}
-export type TehnologiesType = {
-  [key in TechnologyTypes]?: ITechnology[];
-};
-
-export interface ITechnologiesState {
-  technologyCounts: number;
-  technologies: TehnologiesType;
-}
+import { createTechnologies, deleteTechnology, deleteTechnologyAllow, deleteTechnologyCancel, fetchTechnologies } from '../actions';
+import { ITechnologiesState } from '../types';
+import { deleteHandlerSuccess, fetchHandlerSuccess } from './handlers';
 
 const initialState: ITechnologiesState = {
+  technologyDeleting: -1,
   technologyCounts: 0,
-  technologies: {}
+  technologiesIds: [],
+  technologies: {},
+  technologiesByTypes: {}
 };
 
-const educationReducer = reducerWithInitialState(initialState).case(
-  fetchTechnologies.done,
-  (state, payload): ITechnologiesState => {
-    let counts = 0;
-    const technologies = payload.result.reduce((prev, cur) => {
-      let technologiesList: ITechnology[] | undefined = [];
-      if (prev && prev[cur.type]) technologiesList = prev[cur.type];
-      counts++;
+const technologyReducer = reducerWithInitialState(initialState)
+  .case(
+    fetchTechnologies.done,
+    fetchHandlerSuccess
+  )
+  .case(
+    createTechnologies.done,
+    fetchHandlerSuccess
+  )
+  .case(
+    deleteTechnology.done,
+    deleteHandlerSuccess
+  )
+  .case(
+    deleteTechnologyAllow,
+    (state, payload)=> {
       return {
-        ...prev,
-        [cur.type]: technologiesList ? [cur, ...technologiesList] : [cur]
-      };
-    }, {} as TehnologiesType);
-
-    return {
-      ...state,
-      technologies,
-      technologyCounts: counts
-    };
-  }
-);
-
-export default educationReducer;
+        ...state,
+        technologyDeleting: payload.id
+      }
+    }
+  )
+  .case(
+    deleteTechnologyCancel,
+    (state, payload)=> {
+      return {
+        ...state,
+        technologyDeleting: -1
+      }
+    }
+  );
+export default technologyReducer;

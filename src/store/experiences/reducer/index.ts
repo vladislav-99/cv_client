@@ -3,30 +3,19 @@ import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import {
   createExperiences,
   fetchExperiences,
-  deleteExperience
+  deleteExperience,
+  deleteExperienceAllow,
+  deleteExperienceCancel
 } from '../actions';
+import { ExperienceNormalized, IExperienceState } from '../types';
 import { experienceListSchema } from './normalize';
-export interface IExperience {
-  id: number;
-  name: string;
-}
-
-type ExperienceNormalized = {
-  [key: string]: IExperience;
-};
-
-export interface IExperienceState {
-  pending: boolean;
-  error: string | null;
-  experiencesIds: number[];
-  experiences: ExperienceNormalized;
-}
 
 const initialState: IExperienceState = {
   pending: false,
   error: null,
   experiencesIds: [],
-  experiences: {}
+  experiences: {},
+  experienceDeleting: -1
 };
 
 const educationReducer = reducerWithInitialState(initialState)
@@ -45,10 +34,10 @@ const educationReducer = reducerWithInitialState(initialState)
     const normalizedData = normalize(payload.result, experienceListSchema);
     const experiences: ExperienceNormalized | undefined =
       normalizedData.entities.experiences;
-
+    const experiencesIds = [...state.experiencesIds, ...normalizedData.result].sort((id1, id2) => id1 > id2 ? 1 : -1)
     return {
       ...state,
-      experiencesIds: [...state.experiencesIds, ...normalizedData.result],
+      experiencesIds,
       experiences: experiences
         ? {
           ...state.experiences,
@@ -62,18 +51,38 @@ const educationReducer = reducerWithInitialState(initialState)
       let experiencesIds = [...state.experiencesIds];
       const deleteId = payload.result.deletedExperience!.id;
 
-      experiencesIds = experiencesIds.filter((id) => id !== deleteId);
+      experiencesIds = experiencesIds.filter((id) => id !== deleteId).sort((id1, id2) => id1 > id2 ? 1 : -1);
       const experiences = { ...state.experiences };
 
       delete experiences[deleteId]
       return {
         ...state,
         experiencesIds,
-        experiences
+        experiences,
+        experienceDeleting: -1
       };
     }
     return {
-      ...state
+      ...state,
+      experienceDeleting: -1
     };
-  });
+  })
+  .case(
+    deleteExperienceAllow,
+    (state, payload) => {
+      return {
+        ...state,
+        experienceDeleting: payload.id
+      }
+    }
+  )
+  .case(
+    deleteExperienceCancel,
+    (state, payload) => {
+      return {
+        ...state,
+        experienceDeleting: -1
+      }
+    }
+  );
 export default educationReducer;

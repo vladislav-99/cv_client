@@ -1,12 +1,21 @@
 import { all } from '@redux-saga/core/effects';
 
-import { watchEducationsRequest } from './educations/sagas';
+import {
+  watchEducationsRequest,
+  watchAddEducationsRequest,
+  watchDeleteEducationRequest
+} from './educations/sagas';
 import {
   watchExperiencesRequest,
   watchAddExperiencesRequest,
   watchDeleteExperienceRequest
 } from './experiences/sagas';
-import { watchTecnologiesRequest } from './technologies/sagas';
+
+import {
+  watchTecnologiesRequest,
+  watchAddTecnologiesRequest,
+  watchDeleteTechnologyRequest
+} from './technologies/sagas';
 
 export default function* rootSaga() {
   yield all([
@@ -15,5 +24,9 @@ export default function* rootSaga() {
     watchTecnologiesRequest(),
     watchAddExperiencesRequest(),
     watchDeleteExperienceRequest(),
+    watchAddEducationsRequest(),
+    watchDeleteEducationRequest(),
+    watchAddTecnologiesRequest(),
+    watchDeleteTechnologyRequest()
   ]);
 }
