@@ -1,11 +1,12 @@
 import { normalize } from 'normalizr';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
-import { createEducations, deleteEducation, fetchEducations } from '../actions';
+import { createEducations, deleteEducation, deleteEducationAllow, deleteEducationCancel, fetchEducations } from '../actions';
 import { EducationNormalized, IEducationState } from '../types';
 import { educationListSchema } from './normalize';
 
 
 export const initialState: IEducationState = {
+  educationDeleting: -1,
   educations: {},
   educationIds: []
 };
@@ -14,7 +15,6 @@ const educationReducer = reducerWithInitialState(initialState)
   .case(
     fetchEducations.done,
     (state, payload): IEducationState => {
-
       const normalizedData = normalize(payload.result, educationListSchema);
       const educations: EducationNormalized | undefined =
         normalizedData.entities.educations;
@@ -25,8 +25,8 @@ const educationReducer = reducerWithInitialState(initialState)
         educationIds: normalizedData.result,
         educations: educations ? educations : state.educations
       };
-    }
-  ).case(createEducations.done, (state, payload): IEducationState => {
+    })
+  .case(createEducations.done, (state, payload): IEducationState => {
     const normalizedData = normalize(payload.result, educationListSchema);
 
     const educations: EducationNormalized | undefined =
@@ -54,13 +54,33 @@ const educationReducer = reducerWithInitialState(initialState)
       delete educations[deleteId]
       return {
         ...state,
+        educationDeleting: -1,
         educationIds,
-        educations
+        educations,
       };
     }
     return {
-      ...state
+      ...state,
+      educationDeleting: -1
     };
-  });
+  })
+  .case(
+    deleteEducationAllow,
+    (state, payload)=> {
+      return {
+        ...state,
+        educationDeleting: payload.id
+      }
+    }
+  )
+  .case(
+    deleteEducationCancel,
+    (state, payload)=> {
+      return {
+        ...state,
+        educationDeleting: -1
+      }
+    }
+  );
 
 export default educationReducer;

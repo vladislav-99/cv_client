@@ -2,13 +2,13 @@ import React from "react"
 import { useDispatch } from "react-redux"
 import { GridActionsCellItem, GridRowParams } from "@mui/x-data-grid"
 import DeleteIcon from "../../../icons/DeleteIcon"
-import { deleteEducation } from "../../../store/educations/actions"
+import { deleteEducationAllow } from "../../../store/educations/actions"
 
 
 const DeleteEducation: React.FC<{ params: GridRowParams }> = ({ params }) => {
   const dispatch = useDispatch()
   const handleOnClick = () => {
-    dispatch(deleteEducation.started(Number(params.id)))
+    dispatch(deleteEducationAllow({id: Number(params.id)}))
   }
 
   return <GridActionsCellItem

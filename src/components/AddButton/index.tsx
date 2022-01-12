@@ -12,6 +12,7 @@ interface IButtonProps {
 
 const PrimaryButton = styled(Button)({
   fontFamily: 'Nunito',
+  fontSize: '16px',
   height: '45px',
   textTransform: 'capitalize',
   boxShadow: 'none',
@@ -23,6 +24,7 @@ const PrimaryButton = styled(Button)({
 
 const SecondaryButton = styled(Button)({
   fontFamily: 'Nunito',
+  fontSize: '16px',
   fontWeight: '600',
   height: '45px',
   textTransform: 'capitalize',

@@ -10,6 +10,7 @@ export type EducationNormalized = {
 
 
 export interface IEducationState {
+  educationDeleting: number
   educations: EducationNormalized;
   educationIds: number[]
 }

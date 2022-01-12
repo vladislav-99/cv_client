@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
@@ -8,15 +8,17 @@ import AddButton from '../../components/AddButton';
 import Table from '../../components/Table';
 import { getColumns, Tables } from '../../components/Table/Columns';
 import { RootState } from '../../store';
-import { fetchExperiences } from '../../store/experiences/actions';
+import { deleteExperience, deleteExperienceCancel, fetchExperiences } from '../../store/experiences/actions';
 import CustomModal from '../../components/CustomModal';
 import AddExperiences from '../../components/Modals/AddExperiences';
 import useModal from '../../utils/useModal';
+import DeleteContent from '../../components/Modals/DeleteContent';
+import useModalTrigger from '../../utils/useDeleteTrigger';
 
 const Experiences: React.FC = () => {
   const dispatch = useDispatch();
 
-  const { experiences, experiencesIds } = useSelector(
+  const { experiences, experiencesIds, experienceDeleting } = useSelector(
     (state: RootState) => state.experiencesState
   );
 
@@ -29,6 +31,25 @@ const Experiences: React.FC = () => {
   }, [experiencesIds, experiences]);
 
   const { modalOpen, setModalOpen, toggle } = useModal();
+  const { modalOpen: deleteModalOpen, toggle: toggleDeleteModal } = useModal();
+
+  const handleDeleteAllowCb = useCallback(
+    () => dispatch(deleteExperience.started(experienceDeleting)),
+    [dispatch, experienceDeleting]
+  )
+  const handleDeleteCancelCb = useCallback(() => dispatch(deleteExperienceCancel()), [dispatch])
+
+  const {
+    handleDeleteAllow,
+    handleDeleteCancel
+  } = useModalTrigger({
+    trigger: experienceDeleting !== -1,
+    onAllow: handleDeleteAllowCb,
+    onCancel: handleDeleteCancelCb,
+    onToggleModal: toggleDeleteModal
+  })
+
+
 
   return (
     <Box>
@@ -51,6 +72,20 @@ const Experiences: React.FC = () => {
         handleClose={() => setModalOpen(false)}
       >
         <AddExperiences />
+      </CustomModal>
+      <CustomModal
+        title="Delete Company?"
+        isActive={deleteModalOpen}
+        handleClose={handleDeleteCancel}
+        style={{
+          maxWidth: '450px',
+          padding: '30px'
+        }}
+      >
+        <DeleteContent
+          label='company'
+          onDelete={handleDeleteAllow}
+        />
       </CustomModal>
     </Box>
   );

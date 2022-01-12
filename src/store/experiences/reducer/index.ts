@@ -3,7 +3,9 @@ import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import {
   createExperiences,
   fetchExperiences,
-  deleteExperience
+  deleteExperience,
+  deleteExperienceAllow,
+  deleteExperienceCancel
 } from '../actions';
 import { ExperienceNormalized, IExperienceState } from '../types';
 import { experienceListSchema } from './normalize';
@@ -12,7 +14,8 @@ const initialState: IExperienceState = {
   pending: false,
   error: null,
   experiencesIds: [],
-  experiences: {}
+  experiences: {},
+  experienceDeleting: -1
 };
 
 const educationReducer = reducerWithInitialState(initialState)
@@ -55,11 +58,31 @@ const educationReducer = reducerWithInitialState(initialState)
       return {
         ...state,
         experiencesIds,
-        experiences
+        experiences,
+        experienceDeleting: -1
       };
     }
     return {
-      ...state
+      ...state,
+      experienceDeleting: -1
     };
-  });
+  })
+  .case(
+    deleteExperienceAllow,
+    (state, payload) => {
+      return {
+        ...state,
+        experienceDeleting: payload.id
+      }
+    }
+  )
+  .case(
+    deleteExperienceCancel,
+    (state, payload) => {
+      return {
+        ...state,
+        experienceDeleting: -1
+      }
+    }
+  );
 export default educationReducer;

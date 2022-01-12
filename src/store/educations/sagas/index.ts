@@ -3,7 +3,7 @@ import { SagaIterator } from 'redux-saga';
 import { call, takeLatest } from 'redux-saga/effects';
 import { Action } from 'typescript-fsa';
 import { bindAsyncAction } from 'typescript-fsa-redux-saga';
-import educationApiService from '../../../libs/api/educationsApiService';
+import educationApiService from '../../../libs/api/educationApiService';
 import { fetchEducations, createEducations, deleteEducation } from '../actions';
 
 import { IDeleteEducationResponse, IEducation } from '../types';

@@ -10,6 +10,7 @@ export type ExperienceNormalized = {
 export interface IExperienceState {
   pending: boolean;
   error: string | null;
+  experienceDeleting: number;
   experiencesIds: number[];
   experiences: ExperienceNormalized;
 }

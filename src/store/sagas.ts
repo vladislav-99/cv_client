@@ -11,7 +11,11 @@ import {
   watchDeleteExperienceRequest
 } from './experiences/sagas';
 
-import { watchTecnologiesRequest } from './technologies/sagas';
+import {
+  watchTecnologiesRequest,
+  watchAddTecnologiesRequest,
+  watchDeleteTechnologyRequest
+} from './technologies/sagas';
 
 export default function* rootSaga() {
   yield all([
@@ -21,6 +25,8 @@ export default function* rootSaga() {
     watchAddExperiencesRequest(),
     watchDeleteExperienceRequest(),
     watchAddEducationsRequest(),
-    watchDeleteEducationRequest()
+    watchDeleteEducationRequest(),
+    watchAddTecnologiesRequest(),
+    watchDeleteTechnologyRequest()
   ]);
 }

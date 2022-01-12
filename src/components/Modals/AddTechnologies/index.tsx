@@ -7,8 +7,10 @@ import AddButton from '../../AddButton';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '../../../icons/DeleteIcon';
 import { Divider, Stack } from '@mui/material';
-import { createEducations } from '../../../store/educations/actions';
 import SelectField from '../../FormFields/SelectField';
+import { getOptionsFromEnum } from '../../FormFields/SelectField/helpers';
+import { CreatedTehnologyType, TechnologyTypes } from '../../../store/technologies/types';
+import { createTechnologies } from '../../../store/technologies/actions';
 
 const AddTechnologies: React.FC = () => {
   const [technologies, setTechnologies] = useState([{
@@ -56,24 +58,17 @@ const AddTechnologies: React.FC = () => {
     });
   };
 
-  const handleSaveEducations = () => {
-    // dispatch(createEducations.started(technologies));
+  const handleSaveTechnologies = () => {
+    dispatch(createTechnologies.started(technologies as CreatedTehnologyType[]));
+
     setTechnologies([{
       name: '',
       type: ''
     }]);
+    handleChangeType(0)('')
   };
 
-  const technologiesOptions = [
-    {
-      value: 'FRONT-END',
-      label: 'Front end'
-    }, {
-      value: 'BACK-END',
-      label: 'Back end'
-    },
-
-  ];
+  const technologyOptions = useMemo(() => getOptionsFromEnum(TechnologyTypes), [])
 
   const handleSelect = (index: number) => (selected?: {
     value: string;
@@ -82,7 +77,6 @@ const AddTechnologies: React.FC = () => {
     handleChangeType(index)(selected ? selected.value : '')
   }
 
-  console.log('technologies: ', technologies);
 
   return (
     <>
@@ -101,7 +95,7 @@ const AddTechnologies: React.FC = () => {
             />
             <SelectField
               label='Type'
-              options={technologiesOptions}
+              options={technologyOptions}
               optionLabelKey={'label'}
               optionValueKey={'value'}
               onSelect={handleSelect(index)}
@@ -139,7 +133,7 @@ const AddTechnologies: React.FC = () => {
         <AddButton
           title="Save Technologies"
           disabled={isHasEmptyField}
-          cb={handleSaveEducations}
+          cb={handleSaveTechnologies}
         />
       </Box>
     </>
