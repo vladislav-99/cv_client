@@ -11,6 +11,7 @@ export type EducationNormalized = {
 
 export interface IEducationState {
   educationDeleting: number
+  educationEditing: number
   educations: EducationNormalized;
   educationIds: number[]
 }

@@ -8,12 +8,13 @@ import AddButton from '../../components/AddButton';
 import Table from '../../components/Table';
 import { getColumns, Tables } from '../../components/Table/Columns';
 import { RootState } from '../../store';
-import { deleteEducation, deleteEducationCancel, fetchEducations } from '../../store/educations/actions';
+import { fetchDeleteEducation, deleteEducationCancel, editEducation, fetchEducations } from '../../store/educations/actions';
 import CustomModal from '../../components/CustomModal';
 import useModal from '../../utils/useModal';
 import AddEducations from '../../components/Modals/AddEducations';
-import useModalTrigger from '../../utils/useDeleteTrigger';
+import useModalTrigger from '../../utils/useModalTrigger';
 import DeleteContent from '../../components/Modals/DeleteContent';
+import EditEducationModal from '../../components/Modals/Edit/EditEducation';
 
 const Educations: React.FC = () => {
   const dispatch = useDispatch();
@@ -31,18 +32,22 @@ const Educations: React.FC = () => {
   const { modalOpen, setModalOpen, toggle } = useModal();
   const { modalOpen: deleteModalOpen, toggle: toggleDeleteModal } = useModal();
 
-  const handleDeleteAllowCb = useCallback(() => dispatch(deleteEducation.started(educationDeleting)), [dispatch, educationDeleting])
-  const handleDeleteCancelCb = useCallback(() => dispatch(deleteEducationCancel()), [dispatch])
+  const handleAllowCb = useCallback(() => dispatch(fetchDeleteEducation.started(educationDeleting)), [dispatch, educationDeleting])
+  const handleCancelCb = useCallback(() => dispatch(deleteEducationCancel()), [dispatch])
 
   const {
-    handleDeleteAllow,
-    handleDeleteCancel
+    handleAllow,
+    handleCancel
   } = useModalTrigger({
     trigger: educationDeleting !== -1,
-    onAllow: handleDeleteAllowCb,
-    onCancel: handleDeleteCancelCb,
+    onAllow: handleAllowCb,
+    onCancel: handleCancelCb,
     onToggleModal: toggleDeleteModal
   })
+
+  const handleClickOnName = (id: number) => {
+    dispatch(editEducation({ id }))
+  }
 
   return (
     <Box>
@@ -59,7 +64,11 @@ const Educations: React.FC = () => {
 
         <AddButton title="+ Add University" cb={toggle} />
       </Box>
-      <Table columns={getColumns(Tables.educations)} rows={educationsRows} />
+      <Table
+        columns={getColumns(Tables.educations)}
+        rows={educationsRows}
+        onClickName={handleClickOnName}
+      />
 
       <CustomModal
         title="Add University"
@@ -71,7 +80,7 @@ const Educations: React.FC = () => {
       <CustomModal
         title="Delete University?"
         isActive={deleteModalOpen}
-        handleClose={handleDeleteCancel}
+        handleClose={handleCancel}
         style={{
           maxWidth: '450px',
           padding: '30px'
@@ -79,9 +88,10 @@ const Educations: React.FC = () => {
       >
         <DeleteContent
           label='university'
-          onDelete={handleDeleteAllow}
+          onDelete={handleAllow}
         />
       </CustomModal>
+      <EditEducationModal />
     </Box>
   );
 };

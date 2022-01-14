@@ -1,17 +1,17 @@
 import React, { useState, useCallback, useMemo } from 'react';
 import { normalize, schema } from 'normalizr';
 
-interface ISelectEty {
-  value: string,
-  label: string
+export interface ISelectOption {
+  label: string,
+  value: string
 }
 
 const useSelect = <T, V extends keyof T>(initOptions: T[], label: V, value: V) => {
   // const [options, setOptions] = useState<T[]>(nor);
-  const [selectedEntity, setSelectedEntity] = useState<ISelectEty>();
+  const [selectedEntity, setSelectedEntity] = useState<ISelectOption>();
   const [selected, setSelected] = useState<T>();
 
-  const mapToSelectEty = useCallback((option: T):ISelectEty => {
+  const mapToSelectEty = useCallback((option: T):ISelectOption => {
     return {
       value: String(option[value] || ''),
       label: String(option[label] || '')

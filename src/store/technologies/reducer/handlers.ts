@@ -47,7 +47,10 @@ const getNormalized = (state: ITechnologiesState, data: ITechnology[]) => {
 
 
 export const fetchHandlerSuccess =
-  <PayloadParams>(state: ITechnologiesState, payload: Success<PayloadParams, ITechnology[]>): ITechnologiesState => {
+  <PayloadParams>(
+    state: ITechnologiesState,
+    payload: Success<PayloadParams, ITechnology[]>
+  ): ITechnologiesState => {
     const normalizedTechnologies = getNormalized(state, payload.result);
 
     if (!normalizedTechnologies) return state;
@@ -104,5 +107,25 @@ export const deleteHandlerSuccess = (
     technologiesIds,
     technologiesByTypes,
     technologyDeleting: -1
+  }
+}
+
+export const allowEditTechnologyHandler = (
+  state: ITechnologiesState,
+  payload: { id: number }
+): ITechnologiesState => {
+  return {
+    ...state,
+    technologyEditing: payload.id
+  }
+}
+
+export const cancelEditTechnologyHandler = (
+  state: ITechnologiesState,
+  payload: void
+): ITechnologiesState => {
+  return {
+    ...state,
+    technologyEditing: -1
   }
 }

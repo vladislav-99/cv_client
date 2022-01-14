@@ -5,9 +5,12 @@ import {
   fetchExperiences,
   deleteExperience,
   deleteExperienceAllow,
-  deleteExperienceCancel
+  deleteExperienceCancel,
+  editExperience,
+  editExperienceCancel
 } from '../actions';
 import { ExperienceNormalized, IExperienceState } from '../types';
+import { allowEditExperienceHandler, cancelEditExperienceHandler } from './handlers';
 import { experienceListSchema } from './normalize';
 
 const initialState: IExperienceState = {
@@ -15,7 +18,8 @@ const initialState: IExperienceState = {
   error: null,
   experiencesIds: [],
   experiences: {},
-  experienceDeleting: -1
+  experienceDeleting: -1,
+  experienceEditing: -1,
 };
 
 const educationReducer = reducerWithInitialState(initialState)
@@ -84,5 +88,13 @@ const educationReducer = reducerWithInitialState(initialState)
         experienceDeleting: -1
       }
     }
+  )
+  .case(
+    editExperience,
+    allowEditExperienceHandler
+  )
+  .case(
+    editExperienceCancel,
+    cancelEditExperienceHandler
   );
 export default educationReducer;

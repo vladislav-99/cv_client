@@ -16,7 +16,8 @@ import CustomModal from '../../components/CustomModal';
 import useModal from '../../utils/useModal';
 import AddTechnologies from '../../components/Modals/AddTechnologies';
 import DeleteContent from '../../components/Modals/DeleteContent';
-import useModalTrigger from '../../utils/useDeleteTrigger';
+import useModalTrigger from '../../utils/useModalTrigger';
+import EditTechnologyModal from '../../components/Modals/Edit/EditTechnologyModal';
 
 const Technologies: React.FC = () => {
   const dispatch = useDispatch();
@@ -27,16 +28,16 @@ const Technologies: React.FC = () => {
   const { modalOpen: deleteModalOpen, toggle: toggleDeleteModal } = useModal();
 
 
-  const handleDeleteAllowCb = useCallback(() => dispatch(deleteTechnology.started(technologyDeleting)), [dispatch, technologyDeleting])
-  const handleDeleteCancelCb = useCallback(() => dispatch(deleteTechnologyCancel()), [dispatch])
+  const handleAllowCb = useCallback(() => dispatch(deleteTechnology.started(technologyDeleting)), [dispatch, technologyDeleting])
+  const handleCancelCb = useCallback(() => dispatch(deleteTechnologyCancel()), [dispatch])
 
   const {
-    handleDeleteAllow,
-    handleDeleteCancel
+    handleAllow,
+    handleCancel
   } = useModalTrigger({
     trigger: technologyDeleting !== -1,
-    onAllow: handleDeleteAllowCb,
-    onCancel: handleDeleteCancelCb,
+    onAllow: handleAllowCb,
+    onCancel: handleCancelCb,
     onToggleModal: toggleDeleteModal
   })
 
@@ -96,7 +97,7 @@ const Technologies: React.FC = () => {
       <CustomModal
         title="Delete Technology?"
         isActive={deleteModalOpen}
-        handleClose={handleDeleteCancel}
+        handleClose={handleCancel}
         style={{
           maxWidth: '450px',
           padding: '30px'
@@ -104,9 +105,10 @@ const Technologies: React.FC = () => {
       >
         <DeleteContent
           label={'technology'}
-          onDelete={handleDeleteAllow}
+          onDelete={handleAllow}
         />
       </CustomModal>
+      <EditTechnologyModal />
     </Box>
   );
 };

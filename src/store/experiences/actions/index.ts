@@ -8,7 +8,9 @@ export enum experiencesActions {
   CREATE_EXPERIENCES = 'CREATE_EXPERIENCES',
   DELETE_EXPERIENCE = 'DELETE_EXPERIENCE',
   DELETE_EXPERIENCE_ALLOW = 'DELETE_EXPERIENCE_ALLOW',
-  DELETE_EXPERIENCE_CANCEL = 'DELETE_EXPERIENCE_CANCEL'
+  DELETE_EXPERIENCE_CANCEL = 'DELETE_EXPERIENCE_CANCEL',
+  EDIT_EXPERIENCE = 'EDIT_EXPERIENCE',
+  EDIT_EXPERIENCE_CANCEL = 'EDIT_EXPERIENCE_CANCEL'
 }
 
 export const deleteExperienceAllow = actionCreator<{id:number}>(
@@ -18,6 +20,16 @@ export const deleteExperienceAllow = actionCreator<{id:number}>(
 export const deleteExperienceCancel = actionCreator(
   experiencesActions.DELETE_EXPERIENCE_CANCEL
 );
+
+
+export const editExperience = actionCreator<{id:number}>(
+  experiencesActions.EDIT_EXPERIENCE
+);
+
+export const editExperienceCancel = actionCreator(
+  experiencesActions.EDIT_EXPERIENCE_CANCEL
+);
+
 
 export const fetchExperiences = actionCreator.async<void, IExperience[]>(
   experiencesActions.FETCH_EXPERIENCES

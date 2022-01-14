@@ -1,12 +1,22 @@
 import { normalize } from 'normalizr';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
-import { createEducations, deleteEducation, deleteEducationAllow, deleteEducationCancel, fetchEducations } from '../actions';
+import {
+  fetchCreateEducations,
+  fetchDeleteEducation,
+  deleteEducationAllow,
+  deleteEducationCancel,
+  editEducation,
+  editEducationCancel,
+  fetchEducations
+} from '../actions';
 import { EducationNormalized, IEducationState } from '../types';
+import { allowEditEducationHandler, cancelEditEducationHandler } from './handlers';
 import { educationListSchema } from './normalize';
 
 
 export const initialState: IEducationState = {
   educationDeleting: -1,
+  educationEditing: -1,
   educations: {},
   educationIds: []
 };
@@ -26,7 +36,7 @@ const educationReducer = reducerWithInitialState(initialState)
         educations: educations ? educations : state.educations
       };
     })
-  .case(createEducations.done, (state, payload): IEducationState => {
+  .case(fetchCreateEducations.done, (state, payload): IEducationState => {
     const normalizedData = normalize(payload.result, educationListSchema);
 
     const educations: EducationNormalized | undefined =
@@ -43,7 +53,7 @@ const educationReducer = reducerWithInitialState(initialState)
         : state.educations
     };
   })
-  .case(deleteEducation.done, (state, payload): IEducationState => {
+  .case(fetchDeleteEducation.done, (state, payload): IEducationState => {
     if (payload.result.success) {
       let educationIds = [...state.educationIds];
       const deleteId = payload.result.deletedEducation!.id;
@@ -66,7 +76,7 @@ const educationReducer = reducerWithInitialState(initialState)
   })
   .case(
     deleteEducationAllow,
-    (state, payload)=> {
+    (state, payload) => {
       return {
         ...state,
         educationDeleting: payload.id
@@ -75,12 +85,20 @@ const educationReducer = reducerWithInitialState(initialState)
   )
   .case(
     deleteEducationCancel,
-    (state, payload)=> {
+    (state, payload) => {
       return {
         ...state,
         educationDeleting: -1
       }
     }
+  )
+  .case(
+    editEducation,
+    allowEditEducationHandler
+  )
+  .case(
+    editEducationCancel,
+    cancelEditEducationHandler
   );
 
 export default educationReducer;

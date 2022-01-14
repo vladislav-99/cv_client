@@ -26,6 +26,7 @@ export type TechnbologiesNormalized = {
 
 export interface ITechnologiesState {
   technologyDeleting: number;
+  technologyEditing: number;
   technologyCounts: number;
   technologies: TechnbologiesNormalized;
   technologiesIds: number[]

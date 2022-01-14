@@ -7,7 +7,7 @@ import AddButton from '../../AddButton';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '../../../icons/DeleteIcon';
 import { Stack } from '@mui/material';
-import { createEducations } from '../../../store/educations/actions';
+import { fetchCreateEducations } from '../../../store/educations/actions';
 
 const AddEducations: React.FC = () => {
   const [universities, setUniversities] = useState(['']);
@@ -42,7 +42,7 @@ const AddEducations: React.FC = () => {
   };
 
   const handleSaveEducations = () => {
-    dispatch(createEducations.started(universities));
+    dispatch(fetchCreateEducations.started(universities));
     setUniversities(['']);
   };
 
