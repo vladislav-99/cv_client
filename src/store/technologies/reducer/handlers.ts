@@ -139,12 +139,20 @@ export const fetchEditTechnologySuccess = (
   } = payload.result;
 
   const technologies = { ...state.technologies };
-
+  const {
+    technologiesIds
+  } = state
   technologies[id] = payload.result
+
+  const technologiesByTypes = getTechnologiesByTypes(
+    technologiesIds,
+    technologies
+  )
 
   return {
     ...state,
     technologies,
+    technologiesByTypes,
     technologyEditing: -1
   };
 
