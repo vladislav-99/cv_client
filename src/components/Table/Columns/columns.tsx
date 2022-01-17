@@ -21,6 +21,18 @@ function renderId(params: GridRenderCellParams<number>) {
   );
 }
 
+function renderClickableName(params: GridRenderCellParams<number>) {
+  return (
+    <Box
+      sx={{
+        cursor: 'pointer'
+      }}
+    >
+      {params.value}
+    </Box>
+  );
+}
+
 export const educationsColumns = [
   {
     field: 'id',
@@ -29,7 +41,13 @@ export const educationsColumns = [
     sortable: false,
     renderCell: renderId
   },
-  { field: 'name', headerName: 'UNIVERSITY', flex: 1, sortable: false },
+  {
+    field: 'name',
+    headerName: 'UNIVERSITY',
+    flex: 1,
+    sortable: false,
+    renderCell: renderClickableName
+  },
   {
     field: 'actions',
     type: 'actions',
@@ -47,7 +65,13 @@ export const experienceColumns = [
     sortable: false,
     renderCell: renderId
   },
-  { field: 'name', headerName: 'COMPANY', flex: 1, sortable: false },
+  {
+    field: 'name',
+    headerName: 'COMPANY',
+    flex: 1,
+    sortable: false,
+    renderCell: renderClickableName
+  },
   {
     field: 'actions',
     type: 'actions',

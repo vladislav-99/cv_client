@@ -19,7 +19,7 @@ const modalStyle = {
   maxWidth: 800,
   bgcolor: 'background.paper',
   boxShadow: 1,
-  borderRadius: '10px',
+  borderRadius: '30px',
   p: '50px'
 };
 

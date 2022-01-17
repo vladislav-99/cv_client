@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-const useModalTrigger = (
+const useModalTrigger = <T>(
   {
     trigger = false,
     onAllow = () => { },
@@ -8,13 +8,14 @@ const useModalTrigger = (
     onToggleModal = () => { },
   }: {
     trigger: boolean,
-    onAllow?: () => void
+    onAllow?: (value?: T) => void
     onCancel?: () => void
     onToggleModal?: () => void
   }
 
 ) => {
   const [deleteAllow, setDeleteAllow] = useState(false)
+  const [allowProps, setAllowProps] = useState<T>()
 
   useEffect(() => {
     if (trigger) {
@@ -25,25 +26,26 @@ const useModalTrigger = (
 
   useEffect(() => {
     if (trigger && deleteAllow) {
-      onAllow()
+      onAllow(allowProps)
       setDeleteAllow(false)
     }
-  }, [trigger, deleteAllow])
+  }, [trigger, allowProps, deleteAllow])
 
-  const handleDeleteAllow = () => {
+  const handleAllow = (props?: T) => {
+    setAllowProps(props)
     onToggleModal()
     setDeleteAllow(true)
   }
 
-  const handleDeleteCancel = () => {
+  const handleCancel = () => {
     onCancel()
     onToggleModal()
     setDeleteAllow(false)
   }
 
   return {
-    handleDeleteAllow,
-    handleDeleteCancel
+    handleAllow,
+    handleCancel
   }
 };
 

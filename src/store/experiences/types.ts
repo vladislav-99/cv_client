@@ -11,6 +11,7 @@ export interface IExperienceState {
   pending: boolean;
   error: string | null;
   experienceDeleting: number;
+  experienceEditing: number;
   experiencesIds: number[];
   experiences: ExperienceNormalized;
 }

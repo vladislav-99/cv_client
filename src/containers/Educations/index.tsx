@@ -8,12 +8,17 @@ import AddButton from '../../components/AddButton';
 import Table from '../../components/Table';
 import { getColumns, Tables } from '../../components/Table/Columns';
 import { RootState } from '../../store';
-import { deleteEducation, deleteEducationCancel, fetchEducations } from '../../store/educations/actions';
+import {
+  fetchDeleteEducation,
+  deleteEducationCancel,
+  editEducation,
+  fetchEducations
+} from '../../store/educations/actions';
 import CustomModal from '../../components/CustomModal';
 import useModal from '../../utils/useModal';
-import AddEducations from '../../components/Modals/AddEducations';
-import useModalTrigger from '../../utils/useDeleteTrigger';
-import DeleteContent from '../../components/Modals/DeleteContent';
+import AddEducations from '../../components/Modals/Add/AddEducations';
+import EditEducationModal from '../../components/Modals/Edit/EditEducation';
+import DeleteModal from '../../components/Modals/Delete/DeleteModal';
 
 const Educations: React.FC = () => {
   const dispatch = useDispatch();
@@ -29,20 +34,14 @@ const Educations: React.FC = () => {
   const educationsRows = useMemo(() => educationIds.map(id => educations[id]), [educationIds, educations])
 
   const { modalOpen, setModalOpen, toggle } = useModal();
-  const { modalOpen: deleteModalOpen, toggle: toggleDeleteModal } = useModal();
 
-  const handleDeleteAllowCb = useCallback(() => dispatch(deleteEducation.started(educationDeleting)), [dispatch, educationDeleting])
-  const handleDeleteCancelCb = useCallback(() => dispatch(deleteEducationCancel()), [dispatch])
+  const handleAllowCb = useCallback(() => dispatch(fetchDeleteEducation.started(educationDeleting)), [dispatch, educationDeleting])
+  const handleCancelCb = useCallback(() => dispatch(deleteEducationCancel()), [dispatch])
 
-  const {
-    handleDeleteAllow,
-    handleDeleteCancel
-  } = useModalTrigger({
-    trigger: educationDeleting !== -1,
-    onAllow: handleDeleteAllowCb,
-    onCancel: handleDeleteCancelCb,
-    onToggleModal: toggleDeleteModal
-  })
+
+  const handleClickOnName = (id: number) => {
+    dispatch(editEducation({ id }))
+  }
 
   return (
     <Box>
@@ -59,7 +58,11 @@ const Educations: React.FC = () => {
 
         <AddButton title="+ Add University" cb={toggle} />
       </Box>
-      <Table columns={getColumns(Tables.educations)} rows={educationsRows} />
+      <Table
+        columns={getColumns(Tables.educations)}
+        rows={educationsRows}
+        onClickName={handleClickOnName}
+      />
 
       <CustomModal
         title="Add University"
@@ -68,20 +71,14 @@ const Educations: React.FC = () => {
       >
         <AddEducations />
       </CustomModal>
-      <CustomModal
-        title="Delete University?"
-        isActive={deleteModalOpen}
-        handleClose={handleDeleteCancel}
-        style={{
-          maxWidth: '450px',
-          padding: '30px'
-        }}
-      >
-        <DeleteContent
-          label='university'
-          onDelete={handleDeleteAllow}
-        />
-      </CustomModal>
+      <DeleteModal
+        title='Delete University?'
+        contentLabel='university'
+        trigger={educationDeleting !== -1}
+        handleAllowCb={handleAllowCb}
+        handleCancelCb={handleCancelCb}
+      />
+      <EditEducationModal />
     </Box>
   );
 };

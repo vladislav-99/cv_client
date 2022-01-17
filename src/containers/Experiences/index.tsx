@@ -8,12 +8,17 @@ import AddButton from '../../components/AddButton';
 import Table from '../../components/Table';
 import { getColumns, Tables } from '../../components/Table/Columns';
 import { RootState } from '../../store';
-import { deleteExperience, deleteExperienceCancel, fetchExperiences } from '../../store/experiences/actions';
+import {
+  fetchDeleteExperience,
+  deleteExperienceCancel,
+  editExperience,
+  fetchExperiences
+} from '../../store/experiences/actions';
 import CustomModal from '../../components/CustomModal';
-import AddExperiences from '../../components/Modals/AddExperiences';
+import AddExperiences from '../../components/Modals/Add/AddExperiences';
 import useModal from '../../utils/useModal';
-import DeleteContent from '../../components/Modals/DeleteContent';
-import useModalTrigger from '../../utils/useDeleteTrigger';
+import EditExperienceModal from '../../components/Modals/Edit/EditExperience';
+import DeleteModal from '../../components/Modals/Delete/DeleteModal';
 
 const Experiences: React.FC = () => {
   const dispatch = useDispatch();
@@ -31,26 +36,16 @@ const Experiences: React.FC = () => {
   }, [experiencesIds, experiences]);
 
   const { modalOpen, setModalOpen, toggle } = useModal();
-  const { modalOpen: deleteModalOpen, toggle: toggleDeleteModal } = useModal();
 
-  const handleDeleteAllowCb = useCallback(
-    () => dispatch(deleteExperience.started(experienceDeleting)),
+  const handleAllowCb = useCallback(
+    () => dispatch(fetchDeleteExperience.started(experienceDeleting)),
     [dispatch, experienceDeleting]
   )
-  const handleDeleteCancelCb = useCallback(() => dispatch(deleteExperienceCancel()), [dispatch])
+  const handleCancelCb = useCallback(() => dispatch(deleteExperienceCancel()), [dispatch])
 
-  const {
-    handleDeleteAllow,
-    handleDeleteCancel
-  } = useModalTrigger({
-    trigger: experienceDeleting !== -1,
-    onAllow: handleDeleteAllowCb,
-    onCancel: handleDeleteCancelCb,
-    onToggleModal: toggleDeleteModal
-  })
-
-
-
+  const handleClickOnName = (id: number) => {
+    dispatch(editExperience({ id }))
+  }
   return (
     <Box>
       <Title color="#535E6C">Work experience</Title>
@@ -65,7 +60,12 @@ const Experiences: React.FC = () => {
         <Search placeholder="Search company" />
         <AddButton title="+ Add Company" cb={toggle} />
       </Box>
-      <Table columns={getColumns(Tables.experioences)} rows={experiencesRows} />
+      <Table
+        columns={getColumns(Tables.experioences)}
+        rows={experiencesRows}
+        onClickName={handleClickOnName}
+
+      />
       <CustomModal
         title="Add Companies"
         isActive={modalOpen}
@@ -73,20 +73,14 @@ const Experiences: React.FC = () => {
       >
         <AddExperiences />
       </CustomModal>
-      <CustomModal
-        title="Delete Company?"
-        isActive={deleteModalOpen}
-        handleClose={handleDeleteCancel}
-        style={{
-          maxWidth: '450px',
-          padding: '30px'
-        }}
-      >
-        <DeleteContent
-          label='company'
-          onDelete={handleDeleteAllow}
-        />
-      </CustomModal>
+      <DeleteModal
+        title='Delete Company?'
+        contentLabel='company'
+        trigger={experienceDeleting !== -1}
+        handleAllowCb={handleAllowCb}
+        handleCancelCb={handleCancelCb}
+      />
+      <EditExperienceModal />
     </Box>
   );
 };
