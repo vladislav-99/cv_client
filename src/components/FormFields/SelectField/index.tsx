@@ -5,7 +5,7 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select, { SelectChangeEvent } from '@mui/material/Select';
 import InputBase from '@mui/material/InputBase';
-import useSelect from '../../../utils/useSelect';
+import useSelect, { ISelectOption } from '../../../utils/useSelect';
 import { styled } from '@mui/system';
 import Typography from '@mui/material/Typography';
 
@@ -13,6 +13,7 @@ interface SelectFieldProps<T> {
   options: T[],
   optionLabelKey: keyof T,
   optionValueKey: keyof T,
+  initialValue?: string,
   label: string,
   onSelect: (selected?: T) => void
 }
@@ -54,7 +55,14 @@ const CustomControl = styled(FormControl)({
   }
 })
 
-const SelectField = <T,>({ options, optionLabelKey, optionValueKey, label, onSelect }: React.PropsWithChildren<SelectFieldProps<T>>) => {
+const SelectField = <T extends ISelectOption,>({
+  options,
+  optionLabelKey,
+  optionValueKey,
+  label,
+  initialValue = '',
+  onSelect
+}: React.PropsWithChildren<SelectFieldProps<T>>) => {
   const {
     options: selectOptions,
     selected,
@@ -72,7 +80,7 @@ const SelectField = <T,>({ options, optionLabelKey, optionValueKey, label, onSel
     onSelect(selected);
   }, [selected])
 
-  const renderValue = !selected
+  const renderValue = !selected && !initialValue
     ?
     (value: string) => (
       <Typography
@@ -102,7 +110,7 @@ const SelectField = <T,>({ options, optionLabelKey, optionValueKey, label, onSel
 
         <Select
           displayEmpty
-          value={selectedEntity ? selectedEntity.value : ''}
+          value={selectedEntity ? selectedEntity.value : initialValue}
           onChange={handleChange}
           input={<BootstrapInput />}
           renderValue={renderValue}

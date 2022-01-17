@@ -1,6 +1,12 @@
 import React, { useState } from 'react';
 
-import { DataGrid, GridColumns } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridCallbackDetails,
+  GridCellParams,
+  GridColumns,
+  MuiEvent
+} from '@mui/x-data-grid';
 import Box from '@mui/material/Box';
 import { styled } from '@mui/system';
 
@@ -58,13 +64,22 @@ interface TableProps {
   rows: {
     [key: string]: any;
   }[];
+  onClickName?: (id: number) => void
 }
 
-const Table: React.FC<TableProps> = ({ columns, rows }) => {
+const Table: React.FC<TableProps> = ({ columns, rows, onClickName }) => {
   const [pageSize, setPeageSize] = useState(10);
   const handleChangePageSize = (num: number) => {
     setPeageSize(num)
   }
+  const handleCellClick = (
+    params: GridCellParams,
+    event: MuiEvent<React.MouseEvent>,
+    details: GridCallbackDetails
+  ) => {
+    if (onClickName && params.field === 'name') onClickName(Number(params.id));
+  }
+
   return (
     <Box sx={{ width: '100%' }}>
       <StyledDataGrid
@@ -80,6 +95,8 @@ const Table: React.FC<TableProps> = ({ columns, rows }) => {
         pageSize={pageSize}
         rowsPerPageOptions={[10, 25, 50]}
         onPageSizeChange={handleChangePageSize}
+        onCellClick={handleCellClick}
+
       />
     </Box>
   );

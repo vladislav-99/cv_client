@@ -20,6 +20,9 @@ class TechnologyApiService {
     return http.delete<IDeleteTechnologyResponse>(`/technologies/${id}`)
   }
 
+  edit({ id, ...technology }: ITechnology) {
+    return http.patch<ITechnology>(`/technologies/${id}`, technology)
+  }
 }
 
 export default new TechnologyApiService()

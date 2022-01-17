@@ -4,7 +4,7 @@ import { call, takeLatest } from 'redux-saga/effects';
 import { Action } from 'typescript-fsa';
 import { bindAsyncAction } from 'typescript-fsa-redux-saga';
 import technologyApiService from '../../../libs/api/technologyApiService';
-import { fetchTechnologies, createTechnologies, deleteTechnology } from '../actions';
+import { fetchTechnologies, createTechnologies, deleteTechnology, fetchEditTechnology } from '../actions';
 
 import { CreatedTehnologyType, IDeleteTechnologyResponse, ITechnology, TechnologyTypes } from '../types';
 
@@ -37,6 +37,17 @@ const deleteTechnologyWorker = bindAsyncAction(deleteTechnology, {
 });
 
 
+const editTechnologyWorker = bindAsyncAction(fetchEditTechnology, {
+  skipStartedAction: true
+})(function* (technology): SagaIterator {
+  const response: AxiosResponse<ITechnology[]> = yield call(
+    technologyApiService.edit,
+    technology
+  );
+  return response.data;
+});
+
+// watchers
 
 export function* watchTecnologiesRequest() {
   yield takeLatest(fetchTechnologies.started, fetchTecnologiesWorker);
@@ -47,8 +58,15 @@ export function* watchAddTecnologiesRequest() {
     return createTecnologiesWorker(action.payload);
   });
 }
+
 export function* watchDeleteTechnologyRequest() {
   yield takeLatest(deleteTechnology.started, (action: Action<number>) => {
     return deleteTechnologyWorker(action.payload);
+  });
+}
+
+export function* watchEditTechnologyRequest() {
+  yield takeLatest(fetchEditTechnology.started, (action: Action<ITechnology>) => {
+    return editTechnologyWorker(action.payload);
   });
 }

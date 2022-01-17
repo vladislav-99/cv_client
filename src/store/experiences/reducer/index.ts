@@ -1,13 +1,21 @@
 import { normalize } from 'normalizr';
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
 import {
-  createExperiences,
+  fetchCreateExperiences,
   fetchExperiences,
-  deleteExperience,
+  fetchDeleteExperience,
   deleteExperienceAllow,
-  deleteExperienceCancel
+  deleteExperienceCancel,
+  editExperience,
+  editExperienceCancel,
+  fetchEditExperience
 } from '../actions';
 import { ExperienceNormalized, IExperienceState } from '../types';
+import {
+  allowEditExperienceHandler,
+  cancelEditExperienceHandler,
+  fetchEditExperienceSuccess
+} from './handlers';
 import { experienceListSchema } from './normalize';
 
 const initialState: IExperienceState = {
@@ -15,7 +23,8 @@ const initialState: IExperienceState = {
   error: null,
   experiencesIds: [],
   experiences: {},
-  experienceDeleting: -1
+  experienceDeleting: -1,
+  experienceEditing: -1,
 };
 
 const educationReducer = reducerWithInitialState(initialState)
@@ -30,7 +39,7 @@ const educationReducer = reducerWithInitialState(initialState)
       experiences: experiences ? experiences : state.experiences
     };
   })
-  .case(createExperiences.done, (state, payload): IExperienceState => {
+  .case(fetchCreateExperiences.done, (state, payload): IExperienceState => {
     const normalizedData = normalize(payload.result, experienceListSchema);
     const experiences: ExperienceNormalized | undefined =
       normalizedData.entities.experiences;
@@ -46,7 +55,7 @@ const educationReducer = reducerWithInitialState(initialState)
         : state.experiences
     };
   })
-  .case(deleteExperience.done, (state, payload): IExperienceState => {
+  .case(fetchDeleteExperience.done, (state, payload): IExperienceState => {
     if (payload.result.success) {
       let experiencesIds = [...state.experiencesIds];
       const deleteId = payload.result.deletedExperience!.id;
@@ -68,6 +77,10 @@ const educationReducer = reducerWithInitialState(initialState)
     };
   })
   .case(
+    fetchEditExperience.done,
+    fetchEditExperienceSuccess
+  )
+  .case(
     deleteExperienceAllow,
     (state, payload) => {
       return {
@@ -84,5 +97,13 @@ const educationReducer = reducerWithInitialState(initialState)
         experienceDeleting: -1
       }
     }
+  )
+  .case(
+    editExperience,
+    allowEditExperienceHandler
+  )
+  .case(
+    editExperienceCancel,
+    cancelEditExperienceHandler
   );
 export default educationReducer;

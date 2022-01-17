@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Chip from '@mui/material/Chip';
 import CloseIcon from '@mui/icons-material/Close';
 import { RootState } from '../../store';
-import { deleteTechnologyAllow } from '../../store/technologies/actions';
+import { deleteTechnologyAllow, editTechnology } from '../../store/technologies/actions';
 
 const Chips: React.FC<{ technologyId: number }> = ({
   technologyId
@@ -15,8 +15,12 @@ const Chips: React.FC<{ technologyId: number }> = ({
 
   const handleDelete = useCallback(() => {
     dispatch(
-      deleteTechnologyAllow({id: Number(technologyId)})
+      deleteTechnologyAllow({ id: Number(technologyId) })
     )
+  }, [dispatch, technologyId])
+
+  const handleEditTechnology = useCallback(() => {
+    dispatch(editTechnology({ id: Number(technologyId) }))
   }, [dispatch, technologyId])
 
   return (
@@ -32,6 +36,8 @@ const Chips: React.FC<{ technologyId: number }> = ({
         mb: '10px'
       }}
       label={name}
+      clickable
+      onClick={handleEditTechnology}
       deleteIcon={<CloseIcon />}
       onDelete={handleDelete}
     />

@@ -3,7 +3,13 @@ import { SagaIterator } from 'redux-saga';
 import { call, takeLatest } from 'redux-saga/effects';
 import { Action } from 'typescript-fsa';
 import { bindAsyncAction } from 'typescript-fsa-redux-saga';
-import { fetchExperiences, createExperiences, deleteExperience } from '../actions';
+import experienceApiService from '../../../libs/api/experienceApiService';
+import {
+  fetchExperiences,
+  fetchCreateExperiences,
+  fetchDeleteExperience,
+  fetchEditExperience
+} from '../actions';
 
 import { IExperience } from '../types';
 import { IDeleteExperienceResponse } from '../types';
@@ -31,7 +37,17 @@ const fetchExperiencesWorker = bindAsyncAction(fetchExperiences, {
   return response.data;
 });
 
-const createExperiencesWorker = bindAsyncAction(createExperiences, {
+const editExperienceWorker = bindAsyncAction(fetchEditExperience, {
+  skipStartedAction: true
+})(function* (experience): SagaIterator {
+  const response: AxiosResponse<IExperience[]> = yield call(
+    experienceApiService.edit,
+    experience
+  );
+  return response.data;
+});
+
+const createExperiencesWorker = bindAsyncAction(fetchCreateExperiences, {
   skipStartedAction: true
 })(function* (experiences): SagaIterator {
   const response: AxiosResponse<IExperience[]> = yield call(
@@ -41,7 +57,7 @@ const createExperiencesWorker = bindAsyncAction(createExperiences, {
   return response.data;
 });
 
-const deleteExperienceWorker = bindAsyncAction(deleteExperience, {
+const deleteExperienceWorker = bindAsyncAction(fetchDeleteExperience, {
   skipStartedAction: true
 })(function* (id): SagaIterator {
   const response: AxiosResponse<IDeleteExperienceResponse> = yield call(
@@ -56,13 +72,20 @@ export function* watchExperiencesRequest() {
 }
 
 export function* watchAddExperiencesRequest() {
-  yield takeLatest(createExperiences.started, (action: Action<string[]>) => {
+  yield takeLatest(fetchCreateExperiences.started, (action: Action<string[]>) => {
     return createExperiencesWorker(action.payload);
   });
 }
 
+
+export function* watchEditExperienceRequest() {
+  yield takeLatest(fetchEditExperience.started, (action: Action<IExperience>) => {
+    return editExperienceWorker(action.payload);
+  });
+}
+
 export function* watchDeleteExperienceRequest() {
-  yield takeLatest(deleteExperience.started, (action: Action<number>) => {
+  yield takeLatest(fetchDeleteExperience.started, (action: Action<number>) => {
     return deleteExperienceWorker(action.payload);
   });
 }

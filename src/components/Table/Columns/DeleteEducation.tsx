@@ -8,7 +8,7 @@ import { deleteEducationAllow } from "../../../store/educations/actions"
 const DeleteEducation: React.FC<{ params: GridRowParams }> = ({ params }) => {
   const dispatch = useDispatch()
   const handleOnClick = () => {
-    dispatch(deleteEducationAllow({id: Number(params.id)}))
+    dispatch(deleteEducationAllow({ id: Number(params.id) }))
   }
 
   return <GridActionsCellItem

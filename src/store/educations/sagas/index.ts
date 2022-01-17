@@ -4,7 +4,7 @@ import { call, takeLatest } from 'redux-saga/effects';
 import { Action } from 'typescript-fsa';
 import { bindAsyncAction } from 'typescript-fsa-redux-saga';
 import educationApiService from '../../../libs/api/educationApiService';
-import { fetchEducations, createEducations, deleteEducation } from '../actions';
+import { fetchEducations, fetchCreateEducations, fetchDeleteEducation, fetchEditEducation } from '../actions';
 
 import { IDeleteEducationResponse, IEducation } from '../types';
 
@@ -15,17 +15,27 @@ const fetchEducationsWorker = bindAsyncAction(fetchEducations, {
   return response.data;
 });
 
-const createEducationsWorker = bindAsyncAction(createEducations, {
+const createEducationsWorker = bindAsyncAction(fetchCreateEducations, {
   skipStartedAction: true
-})(function* (experiences): SagaIterator {
+})(function* (educations): SagaIterator {
   const response: AxiosResponse<IEducation[]> = yield call(
     educationApiService.createMany,
-    experiences
+    educations
   );
   return response.data;
 });
 
-const deleteEducationWorker = bindAsyncAction(deleteEducation, {
+const editEducationsWorker = bindAsyncAction(fetchEditEducation, {
+  skipStartedAction: true
+})(function* (education): SagaIterator {
+  const response: AxiosResponse<IEducation[]> = yield call(
+    educationApiService.edit,
+    education
+  );
+  return response.data;
+});
+
+const deleteEducationWorker = bindAsyncAction(fetchDeleteEducation, {
   skipStartedAction: true
 })(function* (id): SagaIterator {
   const response: AxiosResponse<IDeleteEducationResponse> = yield call(
@@ -40,13 +50,19 @@ export function* watchEducationsRequest() {
 }
 
 export function* watchAddEducationsRequest() {
-  yield takeLatest(createEducations.started, (action: Action<string[]>) => {
+  yield takeLatest(fetchCreateEducations.started, (action: Action<string[]>) => {
     return createEducationsWorker(action.payload);
   });
 }
 
+export function* watchEditEducationsRequest() {
+  yield takeLatest(fetchEditEducation.started, (action: Action<IEducation>) => {
+    return editEducationsWorker(action.payload);
+  });
+}
+
 export function* watchDeleteEducationRequest() {
-  yield takeLatest(deleteEducation.started, (action: Action<number>) => {
+  yield takeLatest(fetchDeleteEducation.started, (action: Action<number>) => {
     return deleteEducationWorker(action.payload);
   });
 }
