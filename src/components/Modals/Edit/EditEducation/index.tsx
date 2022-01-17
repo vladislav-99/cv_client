@@ -5,8 +5,9 @@ import ModalContent from '../EditNameContent';
 import CustomModal from '../../../CustomModal';
 import useModal from '../../../../utils/useModal';
 import { RootState } from '../../../../store';
-import { editEducationCancel } from '../../../../store/educations/actions';
+import { editEducationCancel, fetchEditEducation } from '../../../../store/educations/actions';
 import useModalTrigger from '../../../../utils/useModalTrigger';
+import { IEducation } from '../../../../store/educations/types';
 
 const EditEducationModal: React.FC = () => {
   const dispatch = useDispatch();
@@ -29,10 +30,14 @@ const EditEducationModal: React.FC = () => {
   }, [educations, educationEditing])
 
   const handleAllowCb = useCallback((value?: string) => {
-
-    console.log(value);
-    dispatch(editEducationCancel());
-  }, [])
+    if (value) {
+      const education: IEducation = {
+        id: educationEditing,
+        name: value
+      }
+      dispatch(fetchEditEducation.started(education));
+    }
+  }, [educationEditing])
   const handleCancelCb = useCallback(() => dispatch(editEducationCancel()), [dispatch])
 
   const {
@@ -50,10 +55,6 @@ const EditEducationModal: React.FC = () => {
       title="Edit University"
       isActive={modalOpen}
       handleClose={handleCancel}
-      style={{
-        maxWidth: '450px',
-        padding: '30px'
-      }}
     >
       <ModalContent
         initialValue={univarsityName}

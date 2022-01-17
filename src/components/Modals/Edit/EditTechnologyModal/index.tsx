@@ -1,14 +1,13 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
-import ModalContent from '../EditNameContent';
 import CustomModal from '../../../CustomModal';
 import useModal from '../../../../utils/useModal';
 import { RootState } from '../../../../store';
-import { editTechnologyCancel } from '../../../../store/technologies/actions';
+import { editTechnologyCancel, fetchEditTechnology } from '../../../../store/technologies/actions';
 import useModalTrigger from '../../../../utils/useModalTrigger';
 import EditTechnologyContent from './EditTechnologyContent';
-import { CreatedTehnologyType } from '../../../../store/technologies/types';
+import { CreatedTehnologyType, ITechnology } from '../../../../store/technologies/types';
 
 const EditTechnologyModal: React.FC = () => {
   const dispatch = useDispatch();
@@ -33,12 +32,13 @@ const EditTechnologyModal: React.FC = () => {
   }, [technologies, technologyEditing])
 
   const handleAllowCb = useCallback((value?: CreatedTehnologyType) => {
-    if (value)
-      console.log({
+    if (value) {
+      const technology: ITechnology = {
         id: technologyEditing,
-        ...value
-      });
-    dispatch(editTechnologyCancel());
+       ...value
+      }
+      dispatch(fetchEditTechnology.started(technology));
+    }
   }, [technologyEditing])
   const handleCancelCb = useCallback(() => dispatch(editTechnologyCancel()), [dispatch])
 
@@ -57,17 +57,7 @@ const EditTechnologyModal: React.FC = () => {
       title="Edit Technology"
       isActive={modalOpen}
       handleClose={handleCancel}
-      style={{
-        maxWidth: '450px',
-        padding: '30px'
-      }}
     >
-      {/* <ModalContent
-        initialValue={technologyName}
-        onSave={handleAllow}
-        fieldLabel='Technology'
-        buttonLabel='Save Technology'
-      /> */}
       <EditTechnologyContent
         initialValue={{
           name: technologyName,

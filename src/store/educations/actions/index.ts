@@ -6,6 +6,7 @@ const actionCreator = actionCreatorFactory();
 
 export enum educationActions {
   FETCH_EDUCATIONS = 'FETCH_EDUCATIONS',
+  FETCH_EDIT_EDUCATION = 'FETCH_EDIT_EDUCATION',
   CREATE_EDUCATIONS = 'CREATE_EDUCATIONS',
   DELETE_EDUCATIONS = 'DELETE_EDUCATIONS',
   DELETE_EDUCATION_ALLOW = 'DELETE_EDUCATION_ALLOW',
@@ -30,12 +31,13 @@ export const editEducationCancel = actionCreator(
   educationActions.EDIT_EDUCATION_CANCEL
 );
 
-export const fetchEditEducation = actionCreator<{ id: number }>(
-  educationActions.EDIT_EDUCATION
-);
 
 export const fetchEducations = actionCreator.async<void, IEducation[]>(
   educationActions.FETCH_EDUCATIONS
+);
+
+export const fetchEditEducation = actionCreator.async<IEducation, IEducation>(
+  educationActions.FETCH_EDIT_EDUCATION
 );
 
 export const fetchCreateEducations = actionCreator.async<string[], IEducation[]>(

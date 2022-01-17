@@ -1,4 +1,5 @@
-import { IExperienceState } from "../types";
+import { Success } from "typescript-fsa";
+import { IExperience, IExperienceState } from "../types";
 
 export const allowEditExperienceHandler = (
   state: IExperienceState,
@@ -18,4 +19,24 @@ export const cancelEditExperienceHandler = (
     ...state,
     experienceEditing: -1
   }
+}
+
+export const fetchEditExperienceSuccess = (
+  state: IExperienceState,
+  payload: Success<IExperience, IExperience>
+): IExperienceState => {
+  const {
+    id
+  } = payload.result;
+
+  const experiences = { ...state.experiences };
+
+  experiences[id] = payload.result
+
+  return {
+    ...state,
+    experiences,
+    experienceEditing: -1
+  };
+
 }

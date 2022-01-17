@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
 import Modal from '@mui/material/Modal';
@@ -19,7 +19,7 @@ const modalStyle = {
   maxWidth: 800,
   bgcolor: 'background.paper',
   boxShadow: 1,
-  borderRadius: '10px',
+  borderRadius: '30px',
   p: '50px'
 };
 

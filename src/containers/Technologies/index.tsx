@@ -14,10 +14,9 @@ import TechnologyCard from '../../components/TechnologyCard';
 import { RootState } from '../../store';
 import CustomModal from '../../components/CustomModal';
 import useModal from '../../utils/useModal';
-import AddTechnologies from '../../components/Modals/AddTechnologies';
-import DeleteContent from '../../components/Modals/DeleteContent';
-import useModalTrigger from '../../utils/useModalTrigger';
+import AddTechnologies from '../../components/Modals/Add/AddTechnologies';
 import EditTechnologyModal from '../../components/Modals/Edit/EditTechnologyModal';
+import DeleteModal from '../../components/Modals/Delete/DeleteModal';
 
 const Technologies: React.FC = () => {
   const dispatch = useDispatch();
@@ -25,24 +24,9 @@ const Technologies: React.FC = () => {
     (state: RootState) => state.technologiesState
   );
   const { modalOpen, toggle } = useModal();
-  const { modalOpen: deleteModalOpen, toggle: toggleDeleteModal } = useModal();
-
 
   const handleAllowCb = useCallback(() => dispatch(deleteTechnology.started(technologyDeleting)), [dispatch, technologyDeleting])
   const handleCancelCb = useCallback(() => dispatch(deleteTechnologyCancel()), [dispatch])
-
-  const {
-    handleAllow,
-    handleCancel
-  } = useModalTrigger({
-    trigger: technologyDeleting !== -1,
-    onAllow: handleAllowCb,
-    onCancel: handleCancelCb,
-    onToggleModal: toggleDeleteModal
-  })
-
-  // const [deleteAllow, setDeleteAllow] = useState(false)
-
 
   useEffect(() => {
     if (!technologiesIds.length) dispatch(fetchTechnologies.started());
@@ -94,20 +78,13 @@ const Technologies: React.FC = () => {
       >
         <AddTechnologies />
       </CustomModal>
-      <CustomModal
-        title="Delete Technology?"
-        isActive={deleteModalOpen}
-        handleClose={handleCancel}
-        style={{
-          maxWidth: '450px',
-          padding: '30px'
-        }}
-      >
-        <DeleteContent
-          label={'technology'}
-          onDelete={handleAllow}
-        />
-      </CustomModal>
+      <DeleteModal
+        title='Delete Technology?'
+        contentLabel='technology'
+        trigger={technologyDeleting !== -1}
+        handleAllowCb={handleAllowCb}
+        handleCancelCb={handleCancelCb}
+      />
       <EditTechnologyModal />
     </Box>
   );

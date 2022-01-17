@@ -20,6 +20,9 @@ class EducationApiService {
     return http.delete<IDeleteEducationResponse>(`/educations/${id}`)
   }
 
+  edit({id, ...education}: IEducation) {
+    return http.patch<IEducation>(`/educations/${id}`, education)
+  }
 }
 
 export default new EducationApiService()

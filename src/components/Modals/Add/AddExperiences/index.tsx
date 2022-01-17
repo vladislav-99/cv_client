@@ -2,12 +2,12 @@ import React, { useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import Box from '@mui/material/Box';
-import InputField from '../../FormFields/InputField';
-import AddButton from '../../AddButton';
+import InputField from '../../../FormFields/InputField';
+import AddButton from '../../../AddButton';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '../../../icons/DeleteIcon';
-import { createExperiences } from '../../../store/experiences/actions';
+import DeleteIcon from '../../../../icons/DeleteIcon';
+import { fetchCreateExperiences } from '../../../../store/experiences/actions';
 
 const AddExperiences: React.FC = () => {
   const [experiences, setExperience] = useState(['']);
@@ -34,7 +34,7 @@ const AddExperiences: React.FC = () => {
   );
 
   const handleSaveExperiences = () => {
-    dispatch(createExperiences.started(experiences));
+    dispatch(fetchCreateExperiences.started(experiences));
     setExperience(['']);
   };
 

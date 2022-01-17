@@ -1,10 +1,11 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
-import { createTechnologies, deleteTechnology, deleteTechnologyAllow, deleteTechnologyCancel, editTechnology, editTechnologyCancel, fetchTechnologies } from '../actions';
+import { createTechnologies, deleteTechnology, deleteTechnologyAllow, deleteTechnologyCancel, editTechnology, editTechnologyCancel, fetchEditTechnology, fetchTechnologies } from '../actions';
 import { ITechnologiesState } from '../types';
 import {
   allowEditTechnologyHandler,
   cancelEditTechnologyHandler,
   deleteHandlerSuccess,
+  fetchEditTechnologySuccess,
   fetchHandlerSuccess
 } from './handlers';
 
@@ -29,6 +30,10 @@ const technologyReducer = reducerWithInitialState(initialState)
   .case(
     deleteTechnology.done,
     deleteHandlerSuccess
+  )
+  .case(
+    fetchEditTechnology.done,
+    fetchEditTechnologySuccess
   )
   .case(
     deleteTechnologyAllow,

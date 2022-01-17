@@ -7,10 +7,11 @@ import {
   deleteEducationCancel,
   editEducation,
   editEducationCancel,
-  fetchEducations
+  fetchEducations,
+  fetchEditEducation
 } from '../actions';
 import { EducationNormalized, IEducationState } from '../types';
-import { allowEditEducationHandler, cancelEditEducationHandler } from './handlers';
+import { allowEditEducationHandler, cancelEditEducationHandler, fetchEditEducationSuccess } from './handlers';
 import { educationListSchema } from './normalize';
 
 
@@ -32,7 +33,7 @@ const educationReducer = reducerWithInitialState(initialState)
 
       return {
         ...state,
-        educationIds: normalizedData.result,
+        educationIds: normalizedData.result.sort((id1: number, id2: number) => id1 > id2 ? 1 : -1),
         educations: educations ? educations : state.educations
       };
     })
@@ -74,6 +75,10 @@ const educationReducer = reducerWithInitialState(initialState)
       educationDeleting: -1
     };
   })
+  .case(
+    fetchEditEducation.done,
+    fetchEditEducationSuccess
+  )
   .case(
     deleteEducationAllow,
     (state, payload) => {

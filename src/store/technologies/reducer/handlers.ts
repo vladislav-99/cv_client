@@ -129,3 +129,23 @@ export const cancelEditTechnologyHandler = (
     technologyEditing: -1
   }
 }
+
+export const fetchEditTechnologySuccess = (
+  state: ITechnologiesState,
+  payload: Success<ITechnology, ITechnology>
+): ITechnologiesState => {
+  const {
+    id
+  } = payload.result;
+
+  const technologies = { ...state.technologies };
+
+  technologies[id] = payload.result
+
+  return {
+    ...state,
+    technologies,
+    technologyEditing: -1
+  };
+
+}

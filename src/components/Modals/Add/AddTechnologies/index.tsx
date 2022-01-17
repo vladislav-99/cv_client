@@ -2,15 +2,15 @@ import React, { useMemo, useState } from 'react';
 import { useDispatch } from 'react-redux';
 
 import Box from '@mui/material/Box';
-import InputField from '../../FormFields/InputField';
-import AddButton from '../../AddButton';
+import InputField from '../../../FormFields/InputField';
+import AddButton from '../../../AddButton';
 import IconButton from '@mui/material/IconButton';
-import DeleteIcon from '../../../icons/DeleteIcon';
+import DeleteIcon from '../../../../icons/DeleteIcon';
 import { Divider, Stack } from '@mui/material';
-import SelectField from '../../FormFields/SelectField';
-import { getOptionsFromEnum } from '../../FormFields/SelectField/helpers';
-import { CreatedTehnologyType, TechnologyTypes } from '../../../store/technologies/types';
-import { createTechnologies } from '../../../store/technologies/actions';
+import SelectField from '../../../FormFields/SelectField';
+import { getOptionsFromEnum } from '../../../FormFields/SelectField/helpers';
+import { CreatedTehnologyType, TechnologyTypes } from '../../../../store/technologies/types';
+import { createTechnologies } from '../../../../store/technologies/actions';
 
 const AddTechnologies: React.FC = () => {
   const [technologies, setTechnologies] = useState([{
