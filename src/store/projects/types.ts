@@ -2,7 +2,7 @@
 export enum ProjectTypes {
   WEB_SERVICE = 'Web Service',
   WEB_SITE = 'Web Site',
-  CRM = 'CRM Sistem'
+  CRM = 'CRM system'
 }
 export interface IProject {
   id: 1,
@@ -16,7 +16,7 @@ export interface IProject {
 
 }
 
-export type ProjectTableRowType = Omit<IProject, "description" | "link" | "photos"> 
+export type ProjectTableRowType = Omit<IProject, "description" | "link" | "photos">
 export type CreateProjectType = Omit<IProject, "id">
 
 export type ProjectNormalized = {
