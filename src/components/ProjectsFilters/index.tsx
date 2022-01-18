@@ -1,16 +1,9 @@
 import React, { useMemo } from 'react';
-import Stack from '@mui/material/Stack';
-import Title from '../Title';
+import Stack from '@mui/material/Stack'
 import Search from '../Search';
-import Button from '../Button';
 import { getOptionsFromEnum } from '../FormFields/SelectField/helpers';
 import SelectField from '../FormFields/SelectField';
-
-enum ProjectTypes {
-  WEB_SERVICE = 'Web Service',
-  WEB_SITE = 'Web Site',
-  CRM = 'CRM Sistem'
-}
+import { ProjectTypes } from '../../store/projects/types';
 
 const ProjectsFilters: React.FC = () => {
 
