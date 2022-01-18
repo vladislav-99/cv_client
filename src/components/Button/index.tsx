@@ -37,7 +37,7 @@ const SecondaryButton = styled(Button)({
   }
 });
 
-const AddButton: React.FC<IButtonProps> = ({
+const CustomButton: React.FC<IButtonProps> = ({
   title,
   secondary,
   disabled,
@@ -56,4 +56,4 @@ const AddButton: React.FC<IButtonProps> = ({
   );
 };
 
-export default AddButton;
+export default CustomButton;

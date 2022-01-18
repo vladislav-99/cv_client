@@ -1,15 +1,17 @@
 import { reducerWithInitialState } from 'typescript-fsa-reducers';
-import { createTechnologies, deleteTechnology, deleteTechnologyAllow, deleteTechnologyCancel, editTechnology, editTechnologyCancel, fetchEditTechnology, fetchTechnologies } from '../actions';
+import { createTechnologies, deleteTechnology, deleteTechnologyAllow, deleteTechnologyCancel, editTechnology, editTechnologyCancel, fetchEditTechnology, fetchTechnologies, searchTechnologyFilter } from '../actions';
 import { ITechnologiesState } from '../types';
 import {
   allowEditTechnologyHandler,
   cancelEditTechnologyHandler,
   deleteHandlerSuccess,
   fetchEditTechnologySuccess,
-  fetchHandlerSuccess
+  fetchHandlerSuccess,
+  searchTechnologyHandler
 } from './handlers';
 
 const initialState: ITechnologiesState = {
+  searchTechnologyName: '',
   technologyDeleting: -1,
   technologyEditing: -1,
   technologyCounts: 0,
@@ -60,6 +62,10 @@ const technologyReducer = reducerWithInitialState(initialState)
   .case(
     editTechnologyCancel,
     cancelEditTechnologyHandler
+  )
+  .case(
+    searchTechnologyFilter,
+    searchTechnologyHandler
   );
 
 

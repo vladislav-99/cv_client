@@ -6,9 +6,9 @@ import Grid from '@mui/material/Grid';
 
 import Title from '../../components/Title';
 import Search from '../../components/Search';
-import AddButton from '../../components/AddButton';
+import Button from '../../components/Button';
 import Divider from '@mui/material/Divider';
-import { deleteTechnology, deleteTechnologyCancel, fetchTechnologies } from '../../store/technologies/actions';
+import { deleteTechnology, deleteTechnologyCancel, fetchTechnologies, searchTechnologyFilter } from '../../store/technologies/actions';
 import { TechnologyTypes } from '../../store/technologies/types';
 import TechnologyCard from '../../components/TechnologyCard';
 import { RootState } from '../../store';
@@ -20,6 +20,7 @@ import DeleteModal from '../../components/Modals/Delete/DeleteModal';
 
 const Technologies: React.FC = () => {
   const dispatch = useDispatch();
+
   const { technologiesIds, technologyDeleting } = useSelector(
     (state: RootState) => state.technologiesState
   );
@@ -36,6 +37,10 @@ const Technologies: React.FC = () => {
     TechnologyTypes
   ) as (keyof typeof TechnologyTypes)[];
 
+  const handleSearch = (searchValue: string) => {
+    dispatch(searchTechnologyFilter(searchValue))
+  }
+
   return (
     <Box>
       <Title color="#535E6C">Technologies</Title>
@@ -47,8 +52,11 @@ const Technologies: React.FC = () => {
           alignItems: 'center'
         }}
       >
-        <Search placeholder="Search technology" />
-        <AddButton title="+ Technology" cb={toggle} />
+        <Search
+          placeholder="Search technology"
+          onSearch={handleSearch}
+        />
+        <Button title="+ Technology" cb={toggle} />
       </Box>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2}>

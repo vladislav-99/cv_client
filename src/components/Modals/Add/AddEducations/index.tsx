@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import Box from '@mui/material/Box';
 import InputField from '../../../FormFields/InputField';
-import AddButton from '../../../AddButton';
+import Button from '../../../Button';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '../../../../icons/DeleteIcon';
 import { Stack } from '@mui/material';
@@ -79,14 +79,14 @@ const AddEducations: React.FC = () => {
         </Stack>
       ))}
       <Box mb={1}>
-        <AddButton
+        <Button
           title="+ Add University"
           secondary
           cb={handleAddUniversity}
         />
       </Box>
       <Box>
-        <AddButton
+        <Button
           title="Save Universities"
           disabled={isHasEmptyField}
           cb={handleSaveEducations}

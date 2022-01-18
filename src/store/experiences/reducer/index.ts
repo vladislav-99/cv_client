@@ -27,7 +27,7 @@ const initialState: IExperienceState = {
   experienceEditing: -1,
 };
 
-const educationReducer = reducerWithInitialState(initialState)
+const experienceReducer = reducerWithInitialState(initialState)
   .case(fetchExperiences.done, (state, payload): IExperienceState => {
     const normalizedData = normalize(payload.result, experienceListSchema);
     const experiences: ExperienceNormalized | undefined =
@@ -35,7 +35,7 @@ const educationReducer = reducerWithInitialState(initialState)
 
     return {
       ...state,
-      experiencesIds: normalizedData.result,
+      experiencesIds: normalizedData.result.sort((id1: number, id2: number) => id1 - id2),
       experiences: experiences ? experiences : state.experiences
     };
   })
@@ -43,7 +43,7 @@ const educationReducer = reducerWithInitialState(initialState)
     const normalizedData = normalize(payload.result, experienceListSchema);
     const experiences: ExperienceNormalized | undefined =
       normalizedData.entities.experiences;
-    const experiencesIds = [...state.experiencesIds, ...normalizedData.result].sort((id1, id2) => id1 > id2 ? 1 : -1)
+    const experiencesIds = [...state.experiencesIds, ...normalizedData.result].sort((id1: number, id2: number) => id1 - id2)
     return {
       ...state,
       experiencesIds,
@@ -106,4 +106,4 @@ const educationReducer = reducerWithInitialState(initialState)
     editExperienceCancel,
     cancelEditExperienceHandler
   );
-export default educationReducer;
+export default experienceReducer;

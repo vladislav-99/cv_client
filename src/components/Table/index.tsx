@@ -24,7 +24,7 @@ const StyledDataGrid = styled(DataGrid)({
     outline: 'none'
   },
   '& .MuiDataGrid-row:hover': {
-    backgroundColor: '#FFFFFF'
+    backgroundColor: '#FBFBFB'
   },
   '& .MuiDataGrid-actionsCell button': {
     borderRadius: 5

@@ -14,12 +14,13 @@ interface SelectFieldProps<T> {
   optionLabelKey: keyof T,
   optionValueKey: keyof T,
   initialValue?: string,
-  label: string,
+  label?: string,
+  placeholder?: string,
   onSelect: (selected?: T) => void
 }
 
 const BootstrapInput = styled(InputBase)({
-
+  backgroundColor: '#fff',
   '& .MuiInputBase-input': {
     borderRadius: 4,
     position: 'relative',
@@ -61,6 +62,7 @@ const SelectField = <T extends ISelectOption,>({
   optionValueKey,
   label,
   initialValue = '',
+  placeholder = '',
   onSelect
 }: React.PropsWithChildren<SelectFieldProps<T>>) => {
   const {
@@ -73,7 +75,6 @@ const SelectField = <T extends ISelectOption,>({
   const handleChange = (event: SelectChangeEvent) => {
     const value = event.target.value;
     changeSelected(value)
-
   };
 
   useEffect(() => {
@@ -90,7 +91,7 @@ const SelectField = <T extends ISelectOption,>({
           color: '#D0D4DA',
         }}
       >
-        Technology type
+        {placeholder}
       </Typography>
     ) : undefined;
 
@@ -99,13 +100,13 @@ const SelectField = <T extends ISelectOption,>({
       minWidth: 120,
       mb: 1.5
     }}>
-      <InputLabel
+      {label && <InputLabel
         sx={{
           fontFamily: 'Nunito',
           color: '#9EA9BA',
           mb: 1.5
         }}
-      >{label}</InputLabel>
+      >{label}</InputLabel>}
       <CustomControl fullWidth>
 
         <Select
