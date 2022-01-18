@@ -2,7 +2,7 @@
 export enum ProjectTypes {
   WEB_SERVICE = 'Web Service',
   WEB_SITE = 'Web Site',
-  CRM = 'CRM system'
+  CRM = 'CRM System'
 }
 export interface IProject {
   id: 1,
