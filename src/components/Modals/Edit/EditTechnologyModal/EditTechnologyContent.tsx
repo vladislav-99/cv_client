@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 
 import Box from '@mui/material/Box';
 import InputField from '../../../FormFields/InputField';
-import AddButton from '../../../AddButton';
+import Button from '../../../Button';
 import { CreatedTehnologyType, TechnologyTypes } from '../../../../store/technologies/types';
 import SelectField from '../../../FormFields/SelectField';
 import { getOptionsFromEnum } from '../../../FormFields/SelectField/helpers';
@@ -81,10 +81,11 @@ const EditTechnologyContent: React.FC<ModalContentProps> = ({
           initialValue={technology.type}
           onSelect={handleSelectType}
           label='Type'
+          placeholder='Technology Type'
         />
       </Box>
       <Box>
-        <AddButton
+        <Button
           title='Save Technology'
           disabled={isHasEmptyField}
           cb={handleSaveEducations}

@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid';
 
 import Title from '../../components/Title';
 import Search from '../../components/Search';
-import AddButton from '../../components/AddButton';
+import Button from '../../components/Button';
 import Divider from '@mui/material/Divider';
 import { deleteTechnology, deleteTechnologyCancel, fetchTechnologies } from '../../store/technologies/actions';
 import { TechnologyTypes } from '../../store/technologies/types';
@@ -48,7 +48,7 @@ const Technologies: React.FC = () => {
         }}
       >
         <Search placeholder="Search technology" />
-        <AddButton title="+ Technology" cb={toggle} />
+        <Button title="+ Technology" cb={toggle} />
       </Box>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container spacing={2}>

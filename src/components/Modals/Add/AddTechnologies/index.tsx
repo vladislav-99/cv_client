@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import Box from '@mui/material/Box';
 import InputField from '../../../FormFields/InputField';
-import AddButton from '../../../AddButton';
+import Button from '../../../Button';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '../../../../icons/DeleteIcon';
 import { Divider, Stack } from '@mui/material';
@@ -99,6 +99,7 @@ const AddTechnologies: React.FC = () => {
               optionLabelKey={'label'}
               optionValueKey={'value'}
               onSelect={handleSelect(index)}
+              placeholder='Technology Type'
             />
             {index !== self.length - 1 && < Divider sx={{
               my: 3
@@ -123,14 +124,14 @@ const AddTechnologies: React.FC = () => {
         </Stack>
       ))}
       <Box mb={1}>
-        <AddButton
+        <Button
           title="+ Add Technology"
           secondary
           cb={handleAddTechnology}
         />
       </Box>
       <Box>
-        <AddButton
+        <Button
           title="Save Technologies"
           disabled={isHasEmptyField}
           cb={handleSaveTechnologies}

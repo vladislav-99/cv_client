@@ -4,7 +4,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import Box from '@mui/material/Box';
 import Title from '../../components/Title';
 import Search from '../../components/Search';
-import AddButton from '../../components/AddButton';
+import Button from '../../components/Button';
 import Table from '../../components/Table';
 import { getColumns, Tables } from '../../components/Table/Columns';
 import { RootState } from '../../store';
@@ -56,7 +56,7 @@ const Educations: React.FC = () => {
       >
         <Search placeholder="Search university" />
 
-        <AddButton title="+ Add University" cb={toggle} />
+        <Button title="+ Add University" cb={toggle} />
       </Box>
       <Table
         columns={getColumns(Tables.educations)}

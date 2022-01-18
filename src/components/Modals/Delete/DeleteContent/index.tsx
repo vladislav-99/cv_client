@@ -1,6 +1,6 @@
 import React from "react"
 import Typography from '@mui/material/Typography';
-import ActionButton from '../../../AddButton';
+import ActionButton from '../../../Button';
 import Box from "@mui/material/Box";
 
 const DeleteContent: React.FC<{ label: string, onDelete: () => void }> = ({ label, onDelete }) => {
