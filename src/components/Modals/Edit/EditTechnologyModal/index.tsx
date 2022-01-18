@@ -25,7 +25,6 @@ const EditTechnologyModal: React.FC = () => {
 
   useEffect(() => {
     if (technologyEditing !== -1) {
-      console.log(technologies[technologyEditing])
       setTechnologyName(technologies[technologyEditing].name)
       setTechnologyType(technologies[technologyEditing].type)
     }

@@ -1,4 +1,9 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState
+} from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
@@ -22,6 +27,7 @@ import DeleteModal from '../../components/Modals/Delete/DeleteModal';
 
 const Educations: React.FC = () => {
   const dispatch = useDispatch();
+  const [search, setSearch] = useState('')
 
   const { educations, educationIds, educationDeleting } = useSelector(
     (state: RootState) => state.educationsState
@@ -31,7 +37,15 @@ const Educations: React.FC = () => {
     if (!educationIds.length) dispatch(fetchEducations.started());
   }, []);
 
-  const educationsRows = useMemo(() => educationIds.map(id => educations[id]), [educationIds, educations])
+  const educationsRows = useMemo(() => {
+    return educationIds
+      .map(id => educations[id])
+      .filter((education) => {
+        if (search)
+          return education.name.toLowerCase().includes(search.toLowerCase())
+        return true
+      });
+  }, [educationIds, educations, search])
 
   const { modalOpen, setModalOpen, toggle } = useModal();
 
@@ -43,6 +57,9 @@ const Educations: React.FC = () => {
     dispatch(editEducation({ id }))
   }
 
+  const handleSearch = (searchValue: string) => {
+    setSearch(searchValue)
+  }
   return (
     <Box>
       <Title color="#535E6C">Education</Title>
@@ -54,7 +71,10 @@ const Educations: React.FC = () => {
           alignItems: 'center'
         }}
       >
-        <Search placeholder="Search university" />
+        <Search
+          placeholder="Search university"
+          onSearch={handleSearch}
+        />
 
         <Button title="+ Add University" cb={toggle} />
       </Box>

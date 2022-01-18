@@ -157,3 +157,36 @@ export const fetchEditTechnologySuccess = (
   };
 
 }
+
+export const searchTechnologyHandler = (
+  state: ITechnologiesState,
+  payload: string
+): ITechnologiesState => {
+  const search = payload;
+  const { technologies } = state;
+  const allIds = Object.keys(technologies).map(id => Number(id));
+
+  if (!search) {
+    const technologiesByTypes = getTechnologiesByTypes(
+      allIds,
+      technologies,
+    )
+    return {
+      ...state,
+      technologiesIds: allIds,
+      technologiesByTypes
+    }
+  }
+
+  const filteredIds = allIds.filter(id => technologies[id].name.toLowerCase().includes(search.toLowerCase()))
+
+  const technologiesByTypes = getTechnologiesByTypes(
+    filteredIds,
+    technologies,
+  )
+  return {
+    ...state,
+    technologiesIds: filteredIds,
+    technologiesByTypes
+  }
+}

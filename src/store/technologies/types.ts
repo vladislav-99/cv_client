@@ -25,6 +25,7 @@ export type TechnbologiesNormalized = {
 
 
 export interface ITechnologiesState {
+  searchTechnologyName: string;
   technologyDeleting: number;
   technologyEditing: number;
   technologyCounts: number;
