@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 
 import Box from '@mui/material/Box';
 import InputField from '../../../FormFields/InputField';
-import AddButton from '../../../AddButton';
+import Button from '../../../Button';
 import Stack from '@mui/material/Stack';
 import IconButton from '@mui/material/IconButton';
 import DeleteIcon from '../../../../icons/DeleteIcon';
@@ -79,10 +79,10 @@ const AddExperiences: React.FC = () => {
         </Stack>
       ))}
       <Box mb={1}>
-        <AddButton secondary title="+ Add Company" cb={handleAddCompany} />
+        <Button secondary title="+ Add Company" cb={handleAddCompany} />
       </Box>
       <Box>
-        <AddButton
+        <Button
           title="Save Experience"
           disabled={isHasEmptyField}
           cb={handleSaveExperiences}

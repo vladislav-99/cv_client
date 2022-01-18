@@ -1,10 +1,10 @@
-import React, { useCallback, useEffect, useMemo } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
 import Title from '../../components/Title';
 import Search from '../../components/Search';
-import AddButton from '../../components/AddButton';
+import Button from '../../components/Button';
 import Table from '../../components/Table';
 import { getColumns, Tables } from '../../components/Table/Columns';
 import { RootState } from '../../store';
@@ -22,7 +22,7 @@ import DeleteModal from '../../components/Modals/Delete/DeleteModal';
 
 const Experiences: React.FC = () => {
   const dispatch = useDispatch();
-
+  const [search, setSearch] = useState('')
   const { experiences, experiencesIds, experienceDeleting } = useSelector(
     (state: RootState) => state.experiencesState
   );
@@ -32,8 +32,14 @@ const Experiences: React.FC = () => {
   }, []);
 
   const experiencesRows = useMemo(() => {
-    return experiencesIds.map((id) => experiences[id]);
-  }, [experiencesIds, experiences]);
+    return experiencesIds
+      .map((id) => experiences[id])
+      .filter((experience) => {
+        if (search)
+          return experience.name.toLowerCase().includes(search.toLowerCase())
+        return true
+      });
+  }, [experiencesIds, experiences, search]);
 
   const { modalOpen, setModalOpen, toggle } = useModal();
 
@@ -46,6 +52,10 @@ const Experiences: React.FC = () => {
   const handleClickOnName = (id: number) => {
     dispatch(editExperience({ id }))
   }
+
+  const handleSearch = (searchValue: string) => {
+    setSearch(searchValue)
+  }
   return (
     <Box>
       <Title color="#535E6C">Work experience</Title>
@@ -57,8 +67,11 @@ const Experiences: React.FC = () => {
           alignItems: 'center'
         }}
       >
-        <Search placeholder="Search company" />
-        <AddButton title="+ Add Company" cb={toggle} />
+        <Search
+          placeholder="Search company"
+          onSearch={handleSearch}
+        />
+        <Button title="+ Add Company" cb={toggle} />
       </Box>
       <Table
         columns={getColumns(Tables.experioences)}

@@ -32,14 +32,16 @@ const CssTextField = styled(FormControl)({
 
 interface SearchProps {
   placeholder?: string;
+  onSearch?: (value: string) => void
 }
 
-const Search: React.FC<SearchProps> = ({ placeholder }) => {
+const Search: React.FC<SearchProps> = ({ placeholder, onSearch }) => {
   const [search, setSearch] = React.useState('');
   const [ref, isFocused] = useFocus<RefObject<HTMLDivElement>>();
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearch(event.target.value);
+    if(onSearch) onSearch(event.target.value)
   };
 
   return (

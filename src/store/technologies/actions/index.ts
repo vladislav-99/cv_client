@@ -14,6 +14,8 @@ export enum technologyActions {
   DELETE_TECHNOLOGY_CANCEL = 'DELETE_TECHNOLOGY_CANCEL',
   EDIT_TECHNOLOGY = 'EDIT_TECHNOLOGY',
   EDIT_TECHNOLOGY_CANCEL = 'EDIT_TECHNOLOGY_CANCEL',
+
+  SEARCH_TECHNOLOGY_FILTER = 'SEARCH_TECHNOLOGY_FILTER',
 }
 
 
@@ -31,6 +33,10 @@ export const editTechnology = actionCreator<{ id: number }>(
 
 export const editTechnologyCancel = actionCreator(
   technologyActions.EDIT_TECHNOLOGY_CANCEL
+);
+
+export const searchTechnologyFilter = actionCreator<string>(
+  technologyActions.SEARCH_TECHNOLOGY_FILTER
 );
 
 export const fetchTechnologies = actionCreator.async<void, ITechnology[]>(

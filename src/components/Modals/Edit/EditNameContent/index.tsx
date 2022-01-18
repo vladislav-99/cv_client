@@ -2,7 +2,7 @@ import React, { useMemo, useState } from 'react';
 
 import Box from '@mui/material/Box';
 import InputField from '../../../FormFields/InputField';
-import AddButton from '../../../AddButton';
+import Button from '../../../Button';
 
 interface ModalContentProps {
   fieldLabel: string,
@@ -48,7 +48,7 @@ const EditNameContent: React.FC<ModalContentProps> = ({
         />
       </Box>
       <Box>
-        <AddButton
+        <Button
           title={buttonLabel}
           disabled={isHasEmptyField}
           cb={handleSaveEducations}

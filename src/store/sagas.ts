@@ -20,6 +20,13 @@ import {
   watchEditTechnologyRequest,
 } from './technologies/sagas';
 
+import {
+  watchAddProjectRequest,
+  watchDeleteProjectRequest,
+  watchEditProjectRequest,
+  watchProjectsRequest
+} from './projects/sagas';
+
 export default function* rootSaga() {
   yield all([
     watchEducationsRequest(),
@@ -36,5 +43,10 @@ export default function* rootSaga() {
     watchAddTecnologiesRequest(),
     watchDeleteTechnologyRequest(),
     watchEditTechnologyRequest(),
+
+    watchAddProjectRequest(),
+    watchDeleteProjectRequest(),
+    watchEditProjectRequest(),
+    watchProjectsRequest(),
   ]);
 }
