@@ -5,11 +5,13 @@ import {
   GridRenderCellParams,
   GridRowParams
 } from '@mui/x-data-grid';
-import DeleteExperience from './DeleteExprience';
-import DeleteEducation from './DeleteEducation';
+import DeleteExperience from './Actions/DeleteExprience';
+import DeleteEducation from './Actions/DeleteEducation';
 import Stack from '@mui/material/Stack';
 import Chip from '@mui/material/Chip';
 import { ProjectTypes } from '../../../store/projects/types';
+import DeleteProject from './Actions/DeleteProject';
+import EditProject from './Actions/EditProject';
 
 function renderId(params: GridRenderCellParams<number>) {
   return (
@@ -66,8 +68,9 @@ function RenderTechnologies({ value }: GridRenderCellParams<string[]>) {
       direction='row'
       spacing={1}
     >
-      {technologies.map(technology => (
+      {technologies.map((technology, index) => (
         <Chip
+          key={index + technology}
           sx={{
             backgroundColor: '#F0F2F5',
             color: '#9EA9BA',
@@ -186,7 +189,8 @@ export const projectColumns = [
     field: 'actions',
     type: 'actions',
     getActions: (params: GridRowParams) => [
-      <DeleteExperience params={params} />
+      <EditProject params={params} />,
+      <DeleteProject params={params} />
     ]
-  }
+  },
 ];

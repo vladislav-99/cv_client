@@ -12,7 +12,7 @@ export interface IProject {
   type: ProjectTypes,
   photos?: string[],
   country?: string,
-  technologies: string[]
+  technologies: number[]
 
 }
 
