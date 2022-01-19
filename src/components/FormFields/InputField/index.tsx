@@ -1,6 +1,5 @@
 import React, { useMemo } from 'react';
 import Box from '@mui/material/Box';
-import InputBase from '@mui/material/InputBase';
 import InputLabel from '@mui/material/InputLabel';
 import FormControl from '@mui/material/FormControl';
 import OutlinedInput from '@mui/material/OutlinedInput';
@@ -37,6 +36,7 @@ interface InputFieldProps {
   value: string;
   label?: string;
   placeholder?: string;
+  multiline?: boolean;
   onChangeHandler: (value: string) => void;
 }
 
@@ -44,6 +44,7 @@ const InputField: React.FC<InputFieldProps> = ({
   value,
   label,
   placeholder,
+  multiline = false,
   onChangeHandler
 }) => {
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -61,7 +62,7 @@ const InputField: React.FC<InputFieldProps> = ({
         sx={{
           fontFamily: 'Nunito',
           color: '#9EA9BA',
-          mb: 1.5 
+          mb: 1.5
         }}
       >
         {label}
@@ -69,6 +70,11 @@ const InputField: React.FC<InputFieldProps> = ({
 
       <CssTextField fullWidth sx={{ mb: 1.5 }} variant="outlined">
         <OutlinedInput
+          sx={{
+            fontFamily: 'Nunito',
+          }}
+          multiline={multiline}
+          rows={multiline ? 3 : undefined}
           placeholder={placeholder}
           value={value}
           onChange={handleChange}
