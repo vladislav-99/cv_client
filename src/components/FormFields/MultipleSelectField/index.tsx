@@ -19,6 +19,7 @@ interface MultipleSelectFieldProps {
   initialValue?: ISelectOption[],
   label?: string,
   placeholder?: string,
+  style?: object,
   onSelect: (selected: ISelectOption[]) => void
 }
 
@@ -27,7 +28,7 @@ const CustomInput = styled(InputBase)({
   '& .MuiInputBase-input': {
     borderRadius: 4,
     position: 'relative',
-    border: '1px solid #ced4da',
+    border: '1px solid #E3E3EA',
     fontSize: 16,
     padding: '10px 26px 10px 12px',
     fontFamily: 'Nunito',
@@ -50,6 +51,7 @@ const MultipleSelectField: React.FC<MultipleSelectFieldProps> = ({
   label,
   initialValue = [],
   placeholder = '',
+  style = {},
   onSelect
 }) => {
 
@@ -103,7 +105,7 @@ const MultipleSelectField: React.FC<MultipleSelectFieldProps> = ({
               sx={{
                 backgroundColor: '#F0F2F5',
                 color: '#9EA9BA',
-                height: '30px',
+                height: '22px',
                 fontSize: '14px',
                 px: '5px',
               }}
@@ -117,7 +119,8 @@ const MultipleSelectField: React.FC<MultipleSelectFieldProps> = ({
   return (
     <Box sx={{
       minWidth: 120,
-      mb: 1.5
+      mb: 1.5,
+      ...style,
     }}>
       {label && <InputLabel
         sx={{
@@ -138,7 +141,13 @@ const MultipleSelectField: React.FC<MultipleSelectFieldProps> = ({
         >
           {
             options.map(
-              (option, index) => (<MenuItem key={index + option.value} value={option.value}>{option.label}</MenuItem>)
+              (option, index) => (
+                <MenuItem
+                  key={index + option.value}
+                  value={option.value}
+                >
+                  {option.label}
+                </MenuItem>)
             )
           }
         </Select>

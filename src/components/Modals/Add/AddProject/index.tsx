@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 import Box from '@mui/material/Box';
+import MUIButton from '@mui/material/Button';
 import InputField from '../../../FormFields/InputField';
 import Button from '../../../Button';
 import Stack from '@mui/material/Stack';
@@ -12,6 +13,7 @@ import MultipleAutocompleteField from '../../../FormFields/MultipleAutocompleteF
 import { RootState } from '../../../../store';
 import { fetchTechnologies } from '../../../../store/technologies/actions';
 import { fetchCreateProject } from '../../../../store/projects/actions';
+import { useUploadForm } from '../../../../utils/useFetch/useUploadImage';
 
 
 type CreatingProjectType = {
@@ -38,6 +40,7 @@ interface AddProjectProps {
 }
 const AddProject: React.FC<AddProjectProps> = ({ onAdd }) => {
   const [project, setProject] = useState<CreatingProjectType>(initialProject);
+  const [photo, setPhoto] = useState<File | null>(null)
   const dispatch = useDispatch();
   const { technologiesIds, technologies } = useSelector(({ technologiesState }: RootState) => technologiesState)
   useEffect(() => {
@@ -68,11 +71,11 @@ const AddProject: React.FC<AddProjectProps> = ({ onAdd }) => {
       };
 
   const handleChangePhotos =
-    (fieldName: "technologies") =>
-      (value: number[]) => {
+    (fieldName: "photos") =>
+      (value: string) => {
         setProject((projectState) => {
           const copyProject = { ...projectState };
-          copyProject[fieldName] = value;
+          copyProject[fieldName] = [...copyProject[fieldName], value];
           return copyProject;
         });
       };
@@ -120,9 +123,42 @@ const AddProject: React.FC<AddProjectProps> = ({ onAdd }) => {
     }))
   }, [technologiesIds])
 
+
+  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setPhoto(event.target.files ? event.target.files[0] : null)
+  };
+
+  const {
+    uploadForm,
+    isSuccess,
+    isLoading,
+    progress
+  } = useUploadForm()
+
+  useEffect(() => {
+    if (photo) {
+      const formData = new FormData();
+      formData.append('image', photo);
+
+      uploadForm(formData).then((res) => {
+        if (res.status === 200) {
+          handleChangePhotos('photos')(res.data.img_url as string)
+          setPhoto(null);
+        }
+      });
+    }
+  }, [photo])
+
+  const px = '3px'
+  console.log(photo)
   return (
     <>
-      <Stack direction="row" alignItems="center" justifyContent='space-between'>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent='space-between'
+        px={px}
+      >
         <Box
           sx={{
             width: '450px'
@@ -138,7 +174,7 @@ const AddProject: React.FC<AddProjectProps> = ({ onAdd }) => {
 
         <Box
           sx={{
-            width: '230px'
+            width: '230px',
           }}
         >
           <SelectField
@@ -152,7 +188,12 @@ const AddProject: React.FC<AddProjectProps> = ({ onAdd }) => {
         </Box>
 
       </Stack>
-      <Stack direction="row" alignItems="center" justifyContent='space-between'>
+      <Stack
+        direction="row"
+        alignItems="center"
+        justifyContent='space-between'
+        px={px}
+      >
         <Box
           sx={{
             width: '250px'
@@ -180,7 +221,9 @@ const AddProject: React.FC<AddProjectProps> = ({ onAdd }) => {
         </Box>
 
       </Stack>
-      <Box>
+      <Box
+        px={px}
+      >
         <MultipleAutocompleteField
           label='Technologies'
           options={technologiesOptions}
@@ -188,7 +231,9 @@ const AddProject: React.FC<AddProjectProps> = ({ onAdd }) => {
           placeholder='Select technologies'
         />
       </Box>
-      <Box>
+      <Box
+        px={px}
+      >
         <InputField
           multiline
           value={project.description}
@@ -197,7 +242,32 @@ const AddProject: React.FC<AddProjectProps> = ({ onAdd }) => {
           onChangeHandler={handleChangeStringField('description')}
         />
       </Box>
+
+      <Box
+        px={px}
+        my={1}
+      >
+        <MUIButton variant="contained" component="label">
+          {photo ? photo.name : "Upload File"}
+          {/* Bind the handler to the input */}
+          <input onChange={handleImageChange} accept=".jpg, .jpeg, .png" type="file" hidden />
+        </MUIButton>
+        {progress}
+      </Box>
       <Box>
+        {
+          project.photos.map(url => {
+            return<img style={{
+              width: '100px',
+              height: '80px',
+              margin: '10px'
+            }}  src={process.env.REACT_APP_CV_API + url} alt=''/>
+          })
+        }
+      </Box>
+      <Box
+        px={px}
+      >
         <Button
           title="Save Project"
           disabled={isHasEmptyField}

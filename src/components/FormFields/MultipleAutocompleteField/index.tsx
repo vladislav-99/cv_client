@@ -19,17 +19,39 @@ interface MultipleAutocompleteFieldProps {
   initialValue?: ISelectOption[],
   label?: string,
   placeholder?: string,
-  onSelect: (selected: ISelectOption[]) => void
+  onSelect: (selected: ISelectOption[]) => void,
+  style?: object
 }
 
 const CustumizedInput = styled(TextField)({
   backgroundColor: '#fff',
+  '& .MuiOutlinedInput-root': {
+
+    borderRadius: '5px',
+    '& input': {
+      fontFamily: 'Nunito',
+    },
+    '& fieldset': {
+      borderColor: '#E3E3EA'
+    },
+    '&:hover fieldset': {
+      borderColor: '#535E6C'
+    },
+    '&.Mui-focused fieldset': {
+      borderColor: '#535E6C'
+    }
+  },
+  // border: '1px solid green',
+  // '& .MuiAutocomplete-input': {
+  //   width: '500px',
+
+  // },
   '& .MuiInputBase-input': {
+    height: '28px',
     borderRadius: 4,
     position: 'relative',
-    border: '1px solid #fff',
+    // border: '1px solid #fff',
     fontSize: 16,
-    padding: '10px 26px 10px 12px',
     fontFamily: 'Nunito',
     '&:focus': {
       borderColor: '#fff',
@@ -41,7 +63,7 @@ const CustumizedInput = styled(TextField)({
 const CustomControl = styled(FormControl)({
   '& .MuiInputLabel-root.Mui-focused': {
     display: 'none'
-  }
+  },
 })
 
 const MultipleAutocompleteField: React.FC<MultipleAutocompleteFieldProps> = ({
@@ -49,6 +71,7 @@ const MultipleAutocompleteField: React.FC<MultipleAutocompleteFieldProps> = ({
   label,
   initialValue = [],
   placeholder = '',
+  style = {},
   onSelect
 }) => {
 
@@ -60,7 +83,8 @@ const MultipleAutocompleteField: React.FC<MultipleAutocompleteFieldProps> = ({
   return (
     <Box sx={{
       minWidth: 120,
-      mb: 1.5
+      mb: 1.5,
+      ...style
     }}>
       {label && <InputLabel
         sx={{
@@ -79,7 +103,9 @@ const MultipleAutocompleteField: React.FC<MultipleAutocompleteFieldProps> = ({
           options={options}
           defaultValue={initialValue}
           freeSolo
+          size="small"
           disableCloseOnSelect
+          openOnFocus
           renderTags={(value: ISelectOption[], getTagProps) =>
             value.map((option: ISelectOption, index: number) => (
               <Chip
