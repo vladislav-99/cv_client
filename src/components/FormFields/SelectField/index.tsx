@@ -19,7 +19,7 @@ interface SelectFieldProps<T> {
   onSelect: (selected?: T) => void
 }
 
-const BootstrapInput = styled(InputBase)({
+const CustomInput = styled(InputBase)({
   backgroundColor: '#fff',
   '& .MuiInputBase-input': {
     borderRadius: 4,
@@ -27,21 +27,10 @@ const BootstrapInput = styled(InputBase)({
     border: '1px solid #ced4da',
     fontSize: 16,
     padding: '10px 26px 10px 12px',
-    fontFamily: [
-      '-apple-system',
-      'BlinkMacSystemFont',
-      '"Segoe UI"',
-      'Roboto',
-      '"Helvetica Neue"',
-      'Arial',
-      'sans-serif',
-      '"Apple Color Emoji"',
-      '"Segoe UI Emoji"',
-      '"Segoe UI Symbol"',
-    ].join(','),
+    fontFamily: 'Nunito',
     '&:focus': {
       borderRadius: 4,
-      borderColor: '#80bdff',
+      borderColor: '#E3E3EA',
       boxShadow: '0 0 0 0.2rem rgba(0,123,255,.25)',
     },
     // '&:focus': {
@@ -53,7 +42,7 @@ const BootstrapInput = styled(InputBase)({
 const CustomControl = styled(FormControl)({
   '& .MuiInputLabel-root.Mui-focused': {
     display: 'none'
-  }
+  },
 })
 
 const SelectField = <T extends ISelectOption,>({
@@ -113,7 +102,7 @@ const SelectField = <T extends ISelectOption,>({
           displayEmpty
           value={selectedEntity ? selectedEntity.value : initialValue}
           onChange={handleChange}
-          input={<BootstrapInput />}
+          input={<CustomInput />}
           renderValue={renderValue}
         >
           {selectOptions &&

@@ -33,7 +33,7 @@ interface ModalProps {
 
 const CustomBox = styled(Box)({
   '&::-webkit-scrollbar': {
-    width: '10px'
+    width: '0'
   }
 })
 
