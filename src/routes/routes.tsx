@@ -14,6 +14,7 @@ import Technologies from '../containers/Technologies';
 import Educations from '../containers/Educations';
 import Users from '../containers/Users';
 import CVs from '../containers/CVs';
+import ProjectView from '../containers/ProjectView';
 
 export enum RoutesTypes {
   main,
@@ -82,6 +83,11 @@ export const routes = (
           </MainLayout>
         </Route>
       ))}
+      <Route exact path='/projects/:id'>
+      <MainLayout>
+            <ProjectView />
+          </MainLayout>
+      </Route>
       <Redirect to="/cvs" />
     </Switch>
   </>

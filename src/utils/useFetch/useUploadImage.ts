@@ -19,7 +19,6 @@ export const useUploadForm = () => {
       },
       onDownloadProgress: (progressEvent) => {
         const progress = 50 + (progressEvent.loaded / progressEvent.total) * 50;
-        console.log(progress);
         setProgress(progress);
       },
     }).then(res => {

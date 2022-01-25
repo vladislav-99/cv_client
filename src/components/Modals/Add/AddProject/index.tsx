@@ -1,8 +1,8 @@
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState, useCallback } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
+import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import MUIButton from '@mui/material/Button';
 import InputField from '../../../FormFields/InputField';
 import Button from '../../../Button';
 import Stack from '@mui/material/Stack';
@@ -13,7 +13,10 @@ import MultipleAutocompleteField from '../../../FormFields/MultipleAutocompleteF
 import { RootState } from '../../../../store';
 import { fetchTechnologies } from '../../../../store/technologies/actions';
 import { fetchCreateProject } from '../../../../store/projects/actions';
-import { useUploadForm } from '../../../../utils/useFetch/useUploadImage';
+import AddPhotoZone, { ImageUploadingProgress, ImageUploadedType } from '../../../FormFields/AddPhotoZone';
+import PhotoCard from '../../../FormFields/PhotoCard';
+import api from '../../../../libs/api';
+import { useUnmount } from 'react-use';
 
 
 type CreatingProjectType = {
@@ -38,15 +41,49 @@ const initialProject: CreatingProjectType = {
 interface AddProjectProps {
   onAdd?: () => void
 }
+
 const AddProject: React.FC<AddProjectProps> = ({ onAdd }) => {
+  const [isMounted, setIsMounted] = useState(false)
+
+  useEffect(() => {
+    setIsMounted(true)
+    return () => {
+      setIsMounted(false)
+    }
+  }, [])
   const [project, setProject] = useState<CreatingProjectType>(initialProject);
-  const [photo, setPhoto] = useState<File | null>(null)
+  const [isSaved, setIsSaved] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState<ImageUploadingProgress>({
+    name: '',
+    progress: 0
+  });
+
+  const [photos, setPhotos] = useState<ImageUploadedType[]>([]);
+
   const dispatch = useDispatch();
   const { technologiesIds, technologies } = useSelector(({ technologiesState }: RootState) => technologiesState)
+
   useEffect(() => {
     if (!technologiesIds.length)
       dispatch(fetchTechnologies.started())
   }, [])
+
+  useEffect(() => {
+    const urls = photos.map(({ url }) => url)
+    setProject(prevProject => ({
+      ...prevProject,
+      photos: urls
+    }))
+  }, [photos])
+
+  useUnmount(() => {
+    const urls = photos.map(({ url }) => url)
+    console.log('urls: ', urls);
+    if (photos.length && !isSaved) {
+      urls.forEach(url => api.delete(url).then())
+    }
+  })
+
 
   const handleChangeStringField = (
     fieldName: keyof Omit<
@@ -61,24 +98,27 @@ const AddProject: React.FC<AddProjectProps> = ({ onAdd }) => {
     };
 
   const handleChangeTechnologies =
-    (fieldName: "technologies") =>
-      (value: number[]) => {
-        setProject((projectState) => {
-          const copyProject = { ...projectState };
-          copyProject[fieldName] = value;
-          return copyProject;
-        });
-      };
+    (value: number[]) => {
+      setProject((projectState) => {
+        const copyProject = { ...projectState };
+        copyProject.technologies = value;
+        return copyProject;
+      });
+    };
 
   const handleChangePhotos =
-    (fieldName: "photos") =>
-      (value: string) => {
-        setProject((projectState) => {
-          const copyProject = { ...projectState };
-          copyProject[fieldName] = [...copyProject[fieldName], value];
-          return copyProject;
-        });
-      };
+    (value: ImageUploadedType) => {
+
+      setPhotos((prevPhotos) => {
+        return [value, ...prevPhotos]
+      })
+
+      setUploadingImage({
+        name: '',
+        progress: 0
+      })
+
+    };
 
   const isHasEmptyField = useMemo(
     () => {
@@ -96,6 +136,8 @@ const AddProject: React.FC<AddProjectProps> = ({ onAdd }) => {
   const handleSaveProject = () => {
     dispatch(fetchCreateProject.started(project as CreateProjectType))
     setProject(initialProject)
+    setIsSaved(true)
+
     onAdd && onAdd()
   };
 
@@ -113,7 +155,7 @@ const AddProject: React.FC<AddProjectProps> = ({ onAdd }) => {
     label: string;
   }[]) => {
     const selectedIds = selected.map(({ value }) => Number(value));
-    handleChangeTechnologies('technologies')(selectedIds)
+    handleChangeTechnologies(selectedIds)
   }
 
   const technologiesOptions = useMemo(() => {
@@ -123,34 +165,32 @@ const AddProject: React.FC<AddProjectProps> = ({ onAdd }) => {
     }))
   }, [technologiesIds])
 
+  const handleUploadingImage = useCallback((uplading: ImageUploadingProgress) => {
+    setUploadingImage(uplading)
+  }, [])
 
-  const handleImageChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPhoto(event.target.files ? event.target.files[0] : null)
-  };
+  const handleCloseCard = (url: string) => {
+    api.delete(url).then(response => {
+      if (response.status === 200) {
+        setPhotos((prevPhotos) => {
+          const index = prevPhotos.findIndex((photo) => photo.url === url);
+          const copiedPhoto = [...prevPhotos];
+          copiedPhoto.splice(index, 1);
+          return copiedPhoto
+        })
+      }
+    })
+  }
 
-  const {
-    uploadForm,
-    isSuccess,
-    isLoading,
-    progress
-  } = useUploadForm()
-
-  useEffect(() => {
-    if (photo) {
-      const formData = new FormData();
-      formData.append('image', photo);
-
-      uploadForm(formData).then((res) => {
-        if (res.status === 200) {
-          handleChangePhotos('photos')(res.data.img_url as string)
-          setPhoto(null);
-        }
-      });
-    }
-  }, [photo])
+  const handleCloseUploadingCard = (url: string) => {
+    setUploadingImage({
+      name: '',
+      progress: 0
+    })
+  }
 
   const px = '3px'
-  console.log(photo)
+
   return (
     <>
       <Stack
@@ -206,7 +246,6 @@ const AddProject: React.FC<AddProjectProps> = ({ onAdd }) => {
             onChangeHandler={handleChangeStringField('country')}
           />
         </Box>
-
         <Box
           sx={{
             width: '430px'
@@ -219,7 +258,6 @@ const AddProject: React.FC<AddProjectProps> = ({ onAdd }) => {
             onChangeHandler={handleChangeStringField('link')}
           />
         </Box>
-
       </Stack>
       <Box
         px={px}
@@ -242,29 +280,43 @@ const AddProject: React.FC<AddProjectProps> = ({ onAdd }) => {
           onChangeHandler={handleChangeStringField('description')}
         />
       </Box>
-
       <Box
         px={px}
         my={1}
+        sx={{
+          height: '60px',
+        }}
       >
-        <MUIButton variant="contained" component="label">
-          {photo ? photo.name : "Upload File"}
-          {/* Bind the handler to the input */}
-          <input onChange={handleImageChange} accept=".jpg, .jpeg, .png" type="file" hidden />
-        </MUIButton>
-        {progress}
+        <AddPhotoZone
+          onUpload={handleChangePhotos}
+          handleUploading={handleUploadingImage}
+        />
       </Box>
-      <Box>
+      <Grid
+        my={2}
+        container
+        rowGap={1}
+        columnGap={2.5}
+        columns={2}
+      >
         {
-          project.photos.map(url => {
-            return<img style={{
-              width: '100px',
-              height: '80px',
-              margin: '10px'
-            }}  src={process.env.REACT_APP_CV_API + url} alt=''/>
+          uploadingImage.name && <PhotoCard
+            image={{
+              name: uploadingImage.name,
+              progress: uploadingImage.progress
+            }}
+            onClose={handleCloseUploadingCard}
+          />
+        }
+        {
+          photos.map((image, index) => {
+            return <PhotoCard
+              onClose={handleCloseCard}
+              image={image}
+              key={index} />
           })
         }
-      </Box>
+      </Grid>
       <Box
         px={px}
       >

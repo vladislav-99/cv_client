@@ -22,6 +22,7 @@
     "react-redux": "^7.2.6",
     "react-router-dom": "^5.0.1",
     "react-scripts": "^5.0.0",
+    "react-use": "^17.3.2",
     "redux": "^4.1.2",
     "redux-devtools-extension": "^2.13.8",
     "redux-saga": "^1.1.3",
@@ -30,7 +31,7 @@
     "typescript-fsa-reducers": "^1.2.2",
     "typescript-fsa-redux-saga": "^2.0.0",
     "typescript-fsa-redux-saga-extended": "^1.0.6",
-    "usehooks-ts": "^2.1.1"
+    "usehooks": "^2.1.1"
   },
   "scripts": {
     "start": "react-scripts start",

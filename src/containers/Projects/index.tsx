@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useCallback } from 'react';
+import React, { useEffect, useMemo, useCallback, useState } from 'react';
 import Box from '@mui/material/Box';
 import Title from '../../components/Title';
 import Button from '../../components/Button';
@@ -19,6 +19,7 @@ import DeleteModal from '../../components/Modals/Delete/DeleteModal';
 
 const Projects: React.FC = () => {
   const dispatch = useDispatch();
+
   const {
     projectIds,
     projects,
