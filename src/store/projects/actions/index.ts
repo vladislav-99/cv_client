@@ -39,7 +39,7 @@ export const fetchEditProject = actionCreator.async<IProject, IProject>(
   projectActions.FETCH_EDIT_PROJECT
 );
 
-export const fetchCreateProject= actionCreator.async<CreateProjectType, IProject>(
+export const fetchCreateProject = actionCreator.async<CreateProjectType, IProject>(
   projectActions.CREATE_PROJECT
 );
 
