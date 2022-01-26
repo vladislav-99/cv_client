@@ -80,7 +80,7 @@ const AddProject: React.FC<AddProjectProps> = ({ onAdd }) => {
     const urls = photos.map(({ url }) => url)
     console.log('urls: ', urls);
     if (photos.length && !isSaved) {
-      urls.forEach(url => api.delete(url).then())
+      urls.forEach(url => api.delete('image/' + url.split('/').reverse()[0]).then())
     }
   })
 
@@ -170,7 +170,7 @@ const AddProject: React.FC<AddProjectProps> = ({ onAdd }) => {
   }, [])
 
   const handleCloseCard = (url: string) => {
-    api.delete(url).then(response => {
+    api.delete('image/' + url.split('/').reverse()[0]).then(response => {
       if (response.status === 200) {
         setPhotos((prevPhotos) => {
           const index = prevPhotos.findIndex((photo) => photo.url === url);

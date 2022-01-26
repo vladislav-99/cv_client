@@ -82,7 +82,7 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
               height: '50px',
               borderRadius: '5px',
               objectFit: 'cover',
-            }} src={process.env.REACT_APP_CV_API + url} alt={name} />
+            }} src={url} alt={name} />
           )}
         </Box>
         <Stack
