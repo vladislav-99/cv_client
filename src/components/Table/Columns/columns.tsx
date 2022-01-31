@@ -1,4 +1,5 @@
 import React, { useMemo } from 'react';
+import { useHistory } from 'react-router';
 
 import Box from '@mui/material/Box';
 import {
@@ -38,17 +39,26 @@ function renderClickableName(params: GridRenderCellParams<number>) {
   );
 }
 
-function renderClickableProjectName(params: GridRenderCellParams<number>) {
+const ClickableProjectName: React.FC<{ name: string, id: number }> = ({ name, id }) => {
+  const history = useHistory();
+  const handleProjectNameClick = () => {
+    history.push('/projects/' + id)
+  }
   return (
     <Box
       sx={{
         cursor: 'pointer',
         color: '#5893F9'
       }}
+      onClick={handleProjectNameClick}
     >
-      {params.value}
+      {name}
     </Box>
   );
+}
+
+const renderClickableProjectName = (params: GridRenderCellParams<string>) => {
+  return <ClickableProjectName name={String(params.value)} id={Number(params.id)} />
 }
 
 function RenderTechnologies({ value }: GridRenderCellParams<string[]>) {

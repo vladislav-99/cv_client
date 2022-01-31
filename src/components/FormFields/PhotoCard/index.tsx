@@ -9,6 +9,7 @@ import { IconButton } from "@mui/material";
 import CloseIcon from "../../../icons/CloseIcon";
 
 export type ImageCardType = {
+  id?: number,
   name: string,
   url?: string,
   size?: number,
@@ -17,7 +18,7 @@ export type ImageCardType = {
 
 interface PhotoCardProps {
   image: ImageCardType,
-  onClose: (url: string) => void
+  onClose: (id: number) => void
 }
 
 const Progress = styled(LinearProgress)({
@@ -35,6 +36,7 @@ const Progress = styled(LinearProgress)({
 
 const PhotoCard: React.FC<PhotoCardProps> = ({
   image: {
+    id,
     name,
     url,
     size,
@@ -43,7 +45,7 @@ const PhotoCard: React.FC<PhotoCardProps> = ({
   onClose }) => {
 
   const handleCloseCard = () => {
-    onClose(url || '')
+    onClose(id || -1)
   }
 
   return <>

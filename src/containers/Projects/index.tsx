@@ -9,13 +9,18 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RootState } from '../../store';
 import {
   deleteProjectCancel,
-  fetchDeleteProject,
+  fetchCreateProject,
+  fetchDeleteProject, fetchEditProject,
   fetchProjects
 } from '../../store/projects/actions';
 import CustomModal from '../../components/CustomModal';
 import AddProject from '../../components/Modals/Add/AddProject';
 import useModal from '../../utils/useModal';
 import DeleteModal from '../../components/Modals/Delete/DeleteModal';
+import { CreateProjectType, ProjectTypes, UpdateProjectType } from '../../store/projects/types';
+import ProjectContent, { CreatingProjectType } from '../../components/Modals/ProjectContent';
+import EditProjectContent from '../../components/Modals/Edit/EditProject/EditProjectContent';
+import EditProjectModal from '../../components/Modals/Edit/EditProject';
 
 const Projects: React.FC = () => {
   const dispatch = useDispatch();
@@ -23,11 +28,12 @@ const Projects: React.FC = () => {
   const {
     projectIds,
     projects,
-    projectDeleting
+    projectDeleting,
   } = useSelector(
     (state: RootState) => state.projectsState
   );
   const { modalOpen, toggle } = useModal();
+
 
   useEffect(() => {
     if (!projectIds.length) dispatch(fetchProjects.started());
@@ -37,8 +43,19 @@ const Projects: React.FC = () => {
   const handleCancelCb = useCallback(() => dispatch(deleteProjectCancel()), [dispatch])
 
   const projectsRows = useMemo(() => {
-    return projectIds.map((id) => projects[id]);
+    return projectIds.map((id) => {
+      const project = projects[id];
+      return {
+        ...project,
+        technologies: project.technologies.map(({ name }) => name)
+      }
+    });
   }, [projectIds, projects]);
+
+  const handleAddProject = (project: CreatingProjectType) => {
+    dispatch(fetchCreateProject.started(project as CreateProjectType))
+    toggle()
+  }
 
   return (
     <Box>
@@ -57,14 +74,13 @@ const Projects: React.FC = () => {
       <Table
         columns={getColumns(Tables.projects)}
         rows={projectsRows}
-        onClickName={() => { }}
       />
       <CustomModal
         title="Add Project"
         isActive={modalOpen}
         handleClose={toggle}
       >
-        <AddProject onAdd={toggle} />
+        <ProjectContent onAdd={handleAddProject} />
       </CustomModal>
       <DeleteModal
         title='Delete Project?'
@@ -73,6 +89,7 @@ const Projects: React.FC = () => {
         handleAllowCb={handleAllowCb}
         handleCancelCb={handleCancelCb}
       />
+      <EditProjectModal />
     </Box>
 
   );

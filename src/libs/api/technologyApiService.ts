@@ -5,7 +5,7 @@ class TechnologyApiService {
 
   createMany(technologies:CreatedTehnologyType[]) {
     return http.post<ITechnology[]>(
-      `${process.env.REACT_APP_CV_API}/technologies/add-many`,
+      `/technologies/add-many`,
       {
         technologies
       }

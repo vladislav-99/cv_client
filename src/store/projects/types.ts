@@ -1,23 +1,37 @@
+import { ITechnology } from "../technologies/types";
 
 export enum ProjectTypes {
   WEB_SERVICE = 'Web Service',
   WEB_SITE = 'Web Site',
   CRM = 'CRM System'
 }
+
+export type ImageUploadedType = {
+  id: number,
+  url: string,
+  name: string,
+  size: number
+}
 export interface IProject {
-  id: 1,
+  id: number,
   name: string,
   description?: string
   link?: string,
   type: ProjectTypes,
-  photos?: string[],
+  photos: ImageUploadedType[],
   country?: string,
-  technologies: number[]
-
+  technologies: ITechnology[]
 }
 
-export type ProjectTableRowType = Omit<IProject, "description" | "link" | "photos">
-export type CreateProjectType = Omit<IProject, "id">
+export type ProjectTableRowType = Omit<IProject, "description" | "link" | "photos"> 
+export type CreateProjectType = Omit<IProject, "id" | "technologies" | "photos"> & {
+  technologies: number[]
+  photos: number[]
+}
+
+export type UpdateProjectType = CreateProjectType & {
+  id: number
+}
 
 export type ProjectNormalized = {
   [key: string]: IProject;
@@ -25,10 +39,11 @@ export type ProjectNormalized = {
 
 
 export interface IProjectState {
-  projectDeleting: number
-  projectEditing: number
-  projects: ProjectNormalized;
-  projectIds: number[]
+  projectDeleting: number,
+  projectEditing: number,
+  projects: ProjectNormalized,
+  projectIds: number[],
+  isFetchedProjects: boolean,
 }
 
 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { styled } from '@mui/system';
 import { useUploadForm } from "../../../utils/useFetch/useUploadImage";
+import { ImageUploadedType } from "../../../store/projects/types";
 
 const AddPhoto = styled('label')({
   cursor: 'pointer',
@@ -27,11 +28,6 @@ export type ImageUploadingProgress = {
   progress: number
 }
 
-export type ImageUploadedType = {
-  url: string,
-  name: string,
-  size: number
-}
 
 interface AddPhotoZoneProps {
   onUpload: (image: ImageUploadedType) => void,
@@ -45,23 +41,17 @@ const AddPhotoZone: React.FC<AddPhotoZoneProps> = ({
   const [photo, setPhoto] = useState<File | null>(null)
 
   const {
-    uploadForm,
+    uploadProjectImage,
     progress
   } = useUploadForm()
 
 
   useEffect(() => {
     if (photo) {
-      const formData = new FormData();
-      formData.append('image', photo);
 
-      uploadForm(formData).then((res) => {
+      uploadProjectImage(photo).then((res) => {
         if (res.status === 200) {
-          onUpload && onUpload({
-            name: photo.name,
-            size: photo.size,
-            url: res.data.img_url as string
-          })
+          onUpload && onUpload(res.data)
         }
 
       }).then(() => {

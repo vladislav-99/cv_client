@@ -1,10 +1,11 @@
 import actionCreatorFactory from 'typescript-fsa';
-import { IProject, IDeleteProjectResponse, CreateProjectType } from '../types';
+import { IProject, IDeleteProjectResponse, CreateProjectType, UpdateProjectType } from '../types';
 
 const actionCreator = actionCreatorFactory();
 
 export enum projectActions {
   FETCH_PROJECTS = 'FETCH_PROJECTS',
+  FETCH_PROJECT = 'FETCH_PROJECT',
   FETCH_EDIT_PROJECT = 'FETCH_EDIT_PROJECT',
   CREATE_PROJECT = 'CREATE_PROJECT',
   DELETE_PROJECTS = 'DELETE_PROJECTS',
@@ -30,12 +31,15 @@ export const editProjectCancel = actionCreator(
   projectActions.EDIT_PROJECT_CANCEL
 );
 
-
 export const fetchProjects = actionCreator.async<void, IProject[]>(
   projectActions.FETCH_PROJECTS
 );
 
-export const fetchEditProject = actionCreator.async<IProject, IProject>(
+export const fetchProjectById = actionCreator.async<number, IProject>(
+  projectActions.FETCH_PROJECT
+);
+
+export const fetchEditProject = actionCreator.async<UpdateProjectType, IProject>(
   projectActions.FETCH_EDIT_PROJECT
 );
 

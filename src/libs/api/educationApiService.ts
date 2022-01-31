@@ -5,7 +5,7 @@ class EducationApiService {
 
   createMany(educations: string[]) {
     return http.post<IEducation[]>(
-      `${process.env.REACT_APP_CV_API}/educations/add-many`,
+      `/educations/add-many`,
       {
         educations
       }

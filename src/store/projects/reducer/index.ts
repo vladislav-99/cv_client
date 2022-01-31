@@ -8,14 +8,16 @@ import {
   editProject,
   editProjectCancel,
   fetchProjects,
-  fetchEditProject
+  fetchEditProject,
+  fetchProjectById
 } from '../actions';
 import { ProjectNormalized, IProjectState } from '../types';
-import { allowEditProjectHandler, cancelEditProjectHandler, fetchEditProjectSuccess } from './handlers';
+import { allowEditProjectHandler, cancelEditProjectHandler, fetchEditProjectSuccess, fetchProjectSuccess } from './handlers';
 import { projectListSchema } from './normalize';
 
 
 export const initialState: IProjectState = {
+  isFetchedProjects: false,
   projectDeleting: -1,
   projectEditing: -1,
   projects: {},
@@ -33,6 +35,7 @@ const projectReducer = reducerWithInitialState(initialState)
 
       return {
         ...state,
+        isFetchedProjects: true,
         projectIds: normalizedData.result.sort((id1: number, id2: number) => id1 - id2),
         projects: projects ? projects : state.projects
       };
@@ -104,6 +107,10 @@ const projectReducer = reducerWithInitialState(initialState)
   .case(
     editProjectCancel,
     cancelEditProjectHandler
-  );
+  )
+  .case(
+    fetchProjectById.done,
+    fetchProjectSuccess
+  )
 
 export default projectReducer;

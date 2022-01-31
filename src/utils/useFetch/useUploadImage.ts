@@ -1,27 +1,27 @@
 
 import { useState } from "react";
-import axios from "axios";
+import { AxiosResponse } from 'axios';
+import { ImageUploadedType } from '../../store/projects/types';
+import projectImageApiService from '../../libs/api/projectImageApiService';
 
 export const useUploadForm = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [progress, setProgress] = useState(0);
 
-  const uploadForm = async (formData: FormData) => {
+  const uploadProjectImage = async (image: File) => {
     setIsLoading(true);
-    return await axios.post(process.env.REACT_APP_CV_API + '/image/', formData, {
-      headers: {
-        "Content-Type": "multipart/form-data",
+    return  await projectImageApiService.create(
+      image,
+      (progressEvent) => {
+      const progress = (progressEvent.loaded / progressEvent.total) * 50;
+      setProgress(progress);
       },
-      onUploadProgress: (progressEvent) => {
-        const progress = (progressEvent.loaded / progressEvent.total) * 50;
-        setProgress(progress);
-      },
-      onDownloadProgress: (progressEvent) => {
-        const progress = 50 + (progressEvent.loaded / progressEvent.total) * 50;
-        setProgress(progress);
-      },
-    }).then(res => {
+      (progressEvent) => {
+      const progress = 50 + (progressEvent.loaded / progressEvent.total) * 50;
+      setProgress(progress);
+    }
+     ).then((res: AxiosResponse<ImageUploadedType>) => {
       setIsLoading(false)
       setIsSuccess(true)
       setProgress(0);
@@ -29,5 +29,5 @@ export const useUploadForm = () => {
     });
   };
 
-  return { uploadForm, isSuccess, isLoading, progress };
+  return { uploadProjectImage, isSuccess, isLoading, progress };
 };
