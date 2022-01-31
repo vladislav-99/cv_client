@@ -1,5 +1,10 @@
 import http from "./index";
-import { IDeleteProjectResponse, IProject, CreateProjectType } from "../../store/projects/types";
+import {
+  IDeleteProjectResponse,
+  IProject,
+  CreateProjectType,
+  UpdateProjectType
+} from '../../store/projects/types';
 
 class ProjectApiService {
 
@@ -22,7 +27,7 @@ class ProjectApiService {
     return http.delete<IDeleteProjectResponse>(`/projects/${id}`)
   }
 
-  edit({id, ...project}: IProject) {
+  edit({id, ...project}: UpdateProjectType) {
     return http.patch<IProject>(`/projects/${id}`, project)
   }
 }

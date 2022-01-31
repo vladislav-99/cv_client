@@ -1,5 +1,24 @@
 import { Success } from "typescript-fsa";
-import { IProject, IProjectState } from "../types";
+import { CreateProjectType, IProject, IProjectState } from '../types';
+
+
+const updateProject = (
+  state: IProjectState,
+  project: IProject
+): IProjectState => {
+  const {
+    id
+  } = project;
+
+  const projects = { ...state.projects };
+
+  projects[id] = project
+
+  return {
+    ...state,
+    projects
+  }
+}
 
 export const allowEditProjectHandler = (
   state: IProjectState,
@@ -23,20 +42,18 @@ export const cancelEditProjectHandler = (
 
 export const fetchEditProjectSuccess = (
   state: IProjectState,
-  payload: Success<IProject, IProject>
+  payload: Success<CreateProjectType, IProject>
 ): IProjectState => {
-  const {
-    id
-  } = payload.result;
-
-  const projects = { ...state.projects };
-
-  projects[id] = payload.result
-
   return {
-    ...state,
-    projects,
+    ...updateProject(state, payload.result),
     projectEditing: -1
   };
 
 }
+
+export const fetchProjectSuccess = (
+  state: IProjectState,
+  payload: Success<number, IProject>
+): IProjectState => {
+  return updateProject(state, payload.result)
+};

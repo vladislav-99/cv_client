@@ -82,7 +82,7 @@ const SelectField = <T extends ISelectOption,>({
       >
         {placeholder}
       </Typography>
-    ) : undefined;
+    ) :  undefined;
 
   return (
     <Box sx={{

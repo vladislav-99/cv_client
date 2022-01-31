@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { styled } from '@mui/system';
 import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
@@ -77,8 +77,11 @@ const MultipleAutocompleteField: React.FC<MultipleAutocompleteFieldProps> = ({
 
   const handleOnSelect = (event: React.SyntheticEvent<Element, Event>, values: (ISelectOption | string)[]) => {
     const selected = [...values].filter(option => typeof option !== 'string') as ISelectOption[]
+    setValue(selected)
     onSelect(selected)
   }
+  const [value, setValue] = useState(initialValue)
+  const [inputValue, setInputValue] = useState('');
 
   return (
     <Box sx={{
@@ -101,11 +104,15 @@ const MultipleAutocompleteField: React.FC<MultipleAutocompleteFieldProps> = ({
           multiple
           id="tags-filled"
           options={options}
-          defaultValue={initialValue}
+          value={value}
           freeSolo
           size="small"
           disableCloseOnSelect
           openOnFocus
+          inputValue={inputValue}
+          onInputChange={(_, newInputValue) => {
+            setInputValue(newInputValue)
+          }}
           renderTags={(value: ISelectOption[], getTagProps) =>
             value.map((option: ISelectOption, index: number) => (
               <Chip

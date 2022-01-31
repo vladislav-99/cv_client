@@ -4,8 +4,8 @@ import { call, takeLatest } from 'redux-saga/effects';
 import { Action } from 'typescript-fsa';
 import { bindAsyncAction } from 'typescript-fsa-redux-saga';
 import projectApiService from '../../../libs/api/projectApiService';
-import { fetchProjects, fetchCreateProject, fetchDeleteProject, fetchEditProject } from '../actions';
-import { CreateProjectType, IDeleteProjectResponse, IProject } from '../types';
+import { fetchProjects, fetchCreateProject, fetchDeleteProject, fetchEditProject, fetchProjectById } from '../actions';
+import { CreateProjectType, IDeleteProjectResponse, IProject, UpdateProjectType } from '../types';
 
 const fetchProjectsWorker = bindAsyncAction(fetchProjects, {
   skipStartedAction: true
@@ -44,8 +44,27 @@ const deleteProjectWorker = bindAsyncAction(fetchDeleteProject, {
   return response.data;
 });
 
+
+const fetchProjectWorker = bindAsyncAction(fetchProjectById, {
+  skipStartedAction: true
+})(function* (id): SagaIterator {
+  const response: AxiosResponse<IProject[]> = yield call(
+    projectApiService.getById,
+    id
+  );
+  return response.data;
+});
+
+// watchers
+
 export function* watchProjectsRequest() {
   yield takeLatest(fetchProjects.started, fetchProjectsWorker);
+}
+
+export function* watchGetProjectRequest() {
+  yield takeLatest(fetchProjectById.started, (action: Action<number>) => {
+    return fetchProjectWorker(action.payload);
+  });
 }
 
 export function* watchAddProjectRequest() {
@@ -55,7 +74,7 @@ export function* watchAddProjectRequest() {
 }
 
 export function* watchEditProjectRequest() {
-  yield takeLatest(fetchEditProject.started, (action: Action<IProject>) => {
+  yield takeLatest(fetchEditProject.started, (action: Action<UpdateProjectType>) => {
     return editProjectsWorker(action.payload);
   });
 }

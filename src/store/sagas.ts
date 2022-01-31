@@ -24,7 +24,8 @@ import {
   watchAddProjectRequest,
   watchDeleteProjectRequest,
   watchEditProjectRequest,
-  watchProjectsRequest
+  watchProjectsRequest,
+  watchGetProjectRequest,
 } from './projects/sagas';
 
 export default function* rootSaga() {
@@ -48,5 +49,6 @@ export default function* rootSaga() {
     watchDeleteProjectRequest(),
     watchEditProjectRequest(),
     watchProjectsRequest(),
+    watchGetProjectRequest(),
   ]);
 }
