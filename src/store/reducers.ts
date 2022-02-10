@@ -5,6 +5,7 @@ import educationsReducer from './educations/reducer';
 import experiencesReducer from './experiences/reducer';
 import technologiesReducer from './technologies/reducer';
 import projectsReducer from './projects/reducer';
+import usersReducer from './users/reducer';
 
 const createRootReducer = (history: History<any>) =>
   combineReducers({
@@ -13,6 +14,7 @@ const createRootReducer = (history: History<any>) =>
     educationsState: educationsReducer,
     technologiesState: technologiesReducer,
     projectsState: projectsReducer,
+    usersState: usersReducer,
   });
 
 export default createRootReducer;

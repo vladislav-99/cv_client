@@ -74,7 +74,7 @@ const Experiences: React.FC = () => {
         <Button title="+ Add Company" cb={toggle} />
       </Box>
       <Table
-        columns={getColumns(Tables.experioences)}
+        columns={getColumns(Tables.experiences)}
         rows={experiencesRows}
         onClickName={handleClickOnName}
 

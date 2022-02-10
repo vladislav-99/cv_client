@@ -126,7 +126,7 @@ const AddTechnologies: React.FC = () => {
       <Box mb={1}>
         <Button
           title="+ Add Technology"
-          secondary
+          type='ghost'
           cb={handleAddTechnology}
         />
       </Box>

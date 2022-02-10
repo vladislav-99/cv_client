@@ -44,6 +44,7 @@ export const fetchCreateEducations = actionCreator.async<string[], IEducation[]>
   educationActions.CREATE_EDUCATIONS
 );
 
+
 export const fetchDeleteEducation = actionCreator.async<
   number,
   IDeleteEducationResponse

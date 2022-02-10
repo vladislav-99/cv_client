@@ -1,4 +1,4 @@
-import React, { useMemo } from 'react';
+import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffectOnce } from 'react-use';
 import { useParams } from "react-router";
@@ -8,18 +8,12 @@ import Link from '@mui/material/Link';
 
 import Title from '../../components/Title';
 import { RootState } from '../../store';
-import { editProject, fetchEditProject, fetchProjectById } from '../../store/projects/actions';
-import { CreateProjectType, ProjectTypes, UpdateProjectType } from '../../store/projects/types';
+import { editProject, fetchProjectById } from '../../store/projects/actions';
+import { ProjectTypes } from '../../store/projects/types';
 import ViewCard from '../../components/VeiwComponents/ViewCard';
 import ViewProjectTechnologies from '../../components/VeiwComponents/ViewProjectTechnologies';
 import ViewPhotos from '../../components/VeiwComponents/ViewPhotos';
-import CustomModal from '../../components/CustomModal';
-import AddProject from '../../components/Modals/Add/AddProject';
-import useModal from '../../utils/useModal';
-import Button from '../../components/Button';
-import ProjectContent, { CreatingProjectType } from '../../components/Modals/ProjectContent';
-import EditProjectContent from '../../components/Modals/Edit/EditProject/EditProjectContent';
-import EditProjectModal from '../../components/Modals/Edit/EditProject';
+import Button from '../../components/Button';import EditProjectModal from '../../components/Modals/Edit/EditProject';
 
 const ProjectView: React.FC = () => {
   const dispatch = useDispatch()
@@ -36,22 +30,6 @@ const ProjectView: React.FC = () => {
       dispatch(fetchProjectById.started(numId))
     }
   })
-
-  // const { modalOpen, toggle } = useModal();
-
-
-  // const handleSaveUpdatedProject = (project: CreatingProjectType) => {
-  //   const numId = Number(id);
-  //
-  //   const updatedProject: UpdateProjectType = {
-  //     ...project,
-  //     type: project.type as ProjectTypes,
-  //     id: numId
-  //   }
-  //
-  //   dispatch(fetchEditProject.started(updatedProject))
-  //   toggle()
-  // }
 
 
   if (isNaN(Number(id))) return <>404 Project Not Found</>
@@ -81,7 +59,6 @@ const ProjectView: React.FC = () => {
           sx={{
             color: '#AFB5BF',
             whiteSpace: 'pre-wrap'
-            // wordWrap: 'break-word'
           }}
         >
           {project.description}

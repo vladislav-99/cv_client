@@ -28,6 +28,14 @@ import {
   watchGetProjectRequest,
 } from './projects/sagas';
 
+import {
+  watchAddUserRequest,
+  watchDeleteUserRequest,
+  watchEditUserRequest,
+  watchUsersRequest,
+  watchGetUserRequest,
+} from './users/sagas';
+
 export default function* rootSaga() {
   yield all([
     watchEducationsRequest(),
@@ -50,5 +58,11 @@ export default function* rootSaga() {
     watchEditProjectRequest(),
     watchProjectsRequest(),
     watchGetProjectRequest(),
+
+    watchAddUserRequest(),
+    watchDeleteUserRequest(),
+    watchEditUserRequest(),
+    watchUsersRequest(),
+    watchGetUserRequest(),
   ]);
 }

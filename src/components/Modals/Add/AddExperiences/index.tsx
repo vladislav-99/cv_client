@@ -79,7 +79,11 @@ const AddExperiences: React.FC = () => {
         </Stack>
       ))}
       <Box mb={1}>
-        <Button secondary title="+ Add Company" cb={handleAddCompany} />
+        <Button
+          title="+ Add Company"
+          cb={handleAddCompany}
+          type='ghost'
+        />
       </Box>
       <Box>
         <Button

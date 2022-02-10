@@ -81,7 +81,7 @@ const AddEducations: React.FC = () => {
       <Box mb={1}>
         <Button
           title="+ Add University"
-          secondary
+          type='ghost'
           cb={handleAddUniversity}
         />
       </Box>

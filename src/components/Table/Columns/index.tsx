@@ -8,7 +8,7 @@ export enum Tables {
   projects,
   users,
   educations,
-  experioences
+  experiences
 }
 
 export const getColumns = (table: Tables) => {
@@ -16,7 +16,7 @@ export const getColumns = (table: Tables) => {
     case Tables.educations:
       return educationsColumns;
 
-    case Tables.experioences:
+    case Tables.experiences:
       return experienceColumns;
       
     case Tables.projects:
